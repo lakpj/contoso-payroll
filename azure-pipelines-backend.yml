@@ -13,13 +13,13 @@ trigger:
     - azure-pipelines.yml
 
 stages:
+# pipeline stage to compile backend code 
 - stage: BuildPayrollBackend
   jobs:
   - job: BuildPayrollBackend
     displayName: Build Payroll Backend with Maven
     pool:
       vmImage: ubuntu-latest
-
     steps:
       - task: Maven@3
         inputs:
@@ -31,3 +31,21 @@ stages:
           publishJUnitResults: true
           testResultsFiles: '**/surefire-reports/TEST-*.xml'
           goals: 'package'
+
+# pipeline stage to build and push the backend container to a docker registry, authenticated through service connection 
+- stage: PushBackendContainerImage
+  dependsOn:
+  - BuildPayrollBackend
+  condition: succeeded('BuildPayrollBackend')
+  jobs:
+  - job: PushBackendImage
+    displayName: Push Backend container image to hub
+
+    steps:
+      - task: Maven@3
+        displayName: Build Docker image
+        inputs:
+          mavenPomFile: 'backend/pom.xml'
+          goals: 'spring-boot:build-image'
+          publishJUnitResults: false
+          jdkVersionOption: '1.11'
