@@ -28,11 +28,12 @@ stages:
       workingDirectory: '$(Build.SourcesDirectory)/frontend'
       displayName: 'npm install, build, and test'
 
-    - script: npm install
-      displayName: "Install NPM"
+    - script: |
+      npm install
+      npm run build
+    displayName: 'npm install and build'
 
-    - script: npm run build
-      displayName: "Build"
-
-    - script: npm test -- --watchAll=false
-      displayName: "Test"
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'build/**' # Pull the build directory (React)
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
