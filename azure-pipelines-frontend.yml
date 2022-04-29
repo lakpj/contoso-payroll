@@ -49,7 +49,7 @@ stages:
         displayName: Build and Push 
         inputs:
           command: buildAndPush
-          containerRegistry: '$(SERVICE_CONNECTION)''
+          containerRegistry: '$(SERVICE_CONNECTION)'
           repository: 'lakpriyagk/contoso-payroll-frontend'
           tags: '$(Build.BuildId)'
           Dockerfile: frontend/Dockerfile
