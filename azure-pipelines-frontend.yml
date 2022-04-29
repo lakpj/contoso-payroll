@@ -28,7 +28,7 @@ stages:
 
     - script: |
         npm install
-        npm start
+        npm run build
       displayName: 'npm install and build'
       workingDirectory: '$(Build.SourcesDirectory)/frontend'
 
