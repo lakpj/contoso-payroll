@@ -32,3 +32,20 @@ stages:
       displayName: 'npm install and build'
       workingDirectory: '$(Build.SourcesDirectory)/frontend'
 
+# pipeline stage to build and push the backend container to a docker registry, authenticated through service connection 
+- stage: PushFrontendContainerImage
+  dependsOn:
+  - BuildPayrollFrontend
+  condition: succeeded('BuildPayrollFrontend')
+  jobs:
+  - job: PushFrontendImage
+    displayName: Build and Push Frontend image to registry 
+
+    steps:
+      - task: Docker@2
+        displayName: Build and Push 
+        inputs:
+          command: buildAndPush
+          containerRegistry: 'lakpriyagk-docker-hub-service-connection'
+          repository: 'lakpriyagk/contoso-payroll-frontend'
+          tags: '$(Build.BuildId)'
