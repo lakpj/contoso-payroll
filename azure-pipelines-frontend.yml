@@ -25,11 +25,11 @@ stages:
     - task: NodeTool@0
       inputs:
         versionSpec: '10.x'
-        workingDir: /frontend
       displayName: 'Install Node.js'
     - script: |      
         npm install
         npm run build
         npm run test
+      workingDirectory: '$(Build.SourcesDirectory)/frontend'
       displayName: 'npm install, build, and test'
 
