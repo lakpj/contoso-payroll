@@ -28,7 +28,7 @@
   },
   "scripts": {
     "watch": "webpack --watch -d --output ./target/classes/static/built/bundle.js",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider; gatsby build"
+    "build": "webpack"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
