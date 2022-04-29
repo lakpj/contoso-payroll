@@ -15,14 +15,15 @@ trigger:
     - backend/*
     - azure-pipelines-backend.yml
 
+pool:
+  vmImage: ubuntu-latest
+
 stages:
 # pipeline stage to compile backend code 
 - stage: BuildPayrollBackend
   jobs:
   - job: BuildPayrollBackend
     displayName: Build Payroll Backend with Maven
-    pool:
-      vmImage: ubuntu-latest
     steps:
       - task: Maven@3
         inputs:
