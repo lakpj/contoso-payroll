@@ -28,7 +28,7 @@
   },
   "scripts": {
     "watch": "webpack --watch -d --output ./target/classes/static/built/bundle.js",
-    "build": "webpack"
+    "build": "./node_modules/.bin/webpack --config webpack.conf.js"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
