@@ -1,0 +1,33 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - backend/*
+    - azure-pipelines.yml
+
+stages:
+- stage: BuildPayrollBackend
+  jobs:
+  - job: BuildPayrollBackend
+    displayName: Build Payroll Backend with Maven
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'backend/pom.xml'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          goals: 'package'
