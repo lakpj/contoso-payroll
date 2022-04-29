@@ -49,3 +49,4 @@ stages:
           containerRegistry: 'lakpriyagk-docker-hub-service-connection'
           repository: 'lakpriyagk/contoso-payroll-frontend'
           tags: '$(Build.BuildId)'
+          Dockerfile: frontend/Dockerfile
