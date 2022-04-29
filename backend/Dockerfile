@@ -7,6 +7,6 @@ COPY src src
 RUN mvn -f pom.xml clean install -DskipTests=true
 
 FROM openjdk:17-alpine
-COPY /backend/target/*.jar contoso-payroll-backend.jar
+COPY --from=build /backend/target/*.jar contoso-payroll-backend.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","contoso-payroll-backend.jar"]
