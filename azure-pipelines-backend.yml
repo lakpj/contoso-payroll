@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  SERVICE_CONNECTION: 'lakpriyagk-docker-hub-service-connection'
+  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
 
 trigger:
   branches:

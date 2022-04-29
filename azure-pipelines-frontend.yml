@@ -3,6 +3,9 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+variables:
+  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
+
 trigger:
   branches:
     include:
@@ -46,7 +49,7 @@ stages:
         displayName: Build and Push 
         inputs:
           command: buildAndPush
-          containerRegistry: 'lakpriyagk-docker-hub-service-connection'
+          containerRegistry: '$(SERVICE_CONNECTION)''
           repository: 'lakpriyagk/contoso-payroll-frontend'
           tags: '$(Build.BuildId)'
           Dockerfile: frontend/Dockerfile
