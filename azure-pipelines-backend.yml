@@ -3,6 +3,9 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+variables:
+  SERVICE_CONNECTION: 'lakpriyagk-docker-hub-service-connection'
+
 trigger:
   branches:
     include:
@@ -39,13 +42,13 @@ stages:
   condition: succeeded('BuildPayrollBackend')
   jobs:
   - job: PushBackendImage
-    displayName: Push Backend container image to hub
+    displayName: Build and Push Backend container image to hub
 
     steps:
-      - task: Maven@3
-        displayName: Build Docker image
+      - task: Docker@2
+        displayName: Build and Push 
         inputs:
-          mavenPomFile: 'backend/pom.xml'
-          goals: 'spring-boot:build-image'
-          publishJUnitResults: false
-          jdkVersionOption: '1.11'
+          command: buildAndPush
+          containerRegistry: '$(SERVICE_CONNECTION)'
+          repository: 'contoso-payroll-backend'
+          tags: '$(Build.BuildId)'
