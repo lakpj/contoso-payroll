@@ -25,7 +25,7 @@ stages:
     - task: NodeTool@0
       inputs:
         versionSpec: '10.x'
-#      workingDirectory: '$(Build.SourcesDirectory)/frontend'
+      workingDirectory: '$(Build.SourcesDirectory)/frontend'
     - task: Npm@0
       displayName: Install application dependencies
       inputs:
@@ -35,11 +35,9 @@ stages:
       inputs:
         command: custom
         customCommand: run ci:unit
-      workingDirectory: '$(Build.SourcesDirectory)/frontend'
     - task: Npm@1
       displayName: npm build
       inputs:
         command: custom
         verbose: false
         customCommand: run build
-      workingDirectory: '$(Build.SourcesDirectory)/frontend'
