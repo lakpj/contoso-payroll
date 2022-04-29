@@ -10,7 +10,7 @@ trigger:
   paths:
     include:
     - backend/*
-    - azure-pipelines.yml
+    - azure-pipelines-backend.yml
 
 stages:
 # pipeline stage to compile backend code 
