@@ -49,6 +49,6 @@ stages:
         displayName: Build and Push 
         inputs:
           command: buildAndPush
-          containerRegistry: '$(SERVICE_CONNECTION)'
-          repository: 'contoso-payroll-backend'
+          containerRegistry: 'lakpriyagk-docker-hub-service-connection'
+          repository: 'lakpriyagk/contoso-payroll-backend'
           tags: '$(Build.BuildId)'
