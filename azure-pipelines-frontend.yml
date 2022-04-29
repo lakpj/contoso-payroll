@@ -26,7 +26,8 @@ stages:
       inputs:
         versionSpec: '10.x'
       displayName: 'Install Node.js'
-    - script: |
+    - script: 
+      workingDirectory: '$(System.DefaultWorkingDirectory)/frontend' |
         npm install
         npm run build
         npm run test
