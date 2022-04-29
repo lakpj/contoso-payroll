@@ -35,9 +35,11 @@ stages:
       inputs:
         command: custom
         customCommand: run ci:unit
+      workingDirectory: '$(Build.SourcesDirectory)/frontend'
     - task: Npm@1
       displayName: npm build
       inputs:
         command: custom
         verbose: false
         customCommand: run build
+      workingDirectory: '$(Build.SourcesDirectory)/frontend'
