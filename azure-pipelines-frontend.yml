@@ -17,27 +17,18 @@ pool:
 
 stages:
 - stage: BuildPayrollFrontend
-  displayName: 'Build'
+  displayName: 'Build Frontend'
   jobs:
-  - job: build_test
+  - job: buildtest
     displayName: 'Build and test'
     steps:
     - task: NodeTool@0
       inputs:
         versionSpec: '10.x'
+
+    - script: |
+        npm install
+        npm start
+      displayName: 'npm install and build'
       workingDirectory: '$(Build.SourcesDirectory)/frontend'
-    - task: Npm@0
-      displayName: Install application dependencies
-      inputs:
-        arguments: --force
-    - task: Npm@1
-      displayName: npm run test
-      inputs:
-        command: custom
-        customCommand: run ci:unit
-    - task: Npm@1
-      displayName: npm build
-      inputs:
-        command: custom
-        verbose: false
-        customCommand: run build
+
