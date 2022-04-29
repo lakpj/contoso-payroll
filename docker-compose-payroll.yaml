@@ -1,13 +1,13 @@
 version: "3"
 services:
   backend:
-    image: "contoso-payroll-backend"
+    image: "lakpriyagk/contoso-payroll-backend"
     container_name: "backend"
     ports:
       - "8080:8080"
 
   frontend:
-    image: "contoso-payroll-frontend"
+    image: "lakpriyagk/contoso-payroll-frontend"
     container_name: "frontend"
     ports:
       - "80:80"
