@@ -2,14 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "logAnalyticsWorkspaceName": {
-            "value": "contosoPayrollLa"
-        },
-        "owner": {
-            "value": "first.lastname@gmail.com"
-        },        
-        "environment": {
-            "value": "Development"
-        }
+      "workspaceName": {
+        "value": "MyWorkspace"
+      },
+      "sku": {
+        "value": "pergb2018"
+      },
+      "location": {
+        "value": "westeurope"
+      },
+      "resourcePermissions": {
+        "value": true
+      },
+      "heartbeatTableRetention": {
+        "value": 30
+      }
     }
-}
+  }
