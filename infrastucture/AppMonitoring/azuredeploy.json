@@ -32,7 +32,6 @@
         },
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-          "[resourceId('Microsoft.Web/sites', variables('webSiteName'))]",
           "[resourceId('Microsoft.Web/sites/siteextensions', variables('webSiteName'), 'Microsoft.ApplicationInsights.AzureWebSites')]"
         ]
       },
@@ -42,7 +41,6 @@
         "name": "[format('{0}/{1}', variables('webSiteName'), 'Microsoft.ApplicationInsights.AzureWebSites')]",
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-          "[resourceId('Microsoft.Web/sites', variables('webSiteName'))]"
         ]
       },
       {
@@ -67,10 +65,7 @@
           "detailedErrorMessages": {
             "enabled": true
           }
-        },
-        "dependsOn": [
-          "[resourceId('Microsoft.Web/sites', variables('webSiteName'))]"
-        ]
+        }
       },
       {
         "type": "Microsoft.Insights/components",
