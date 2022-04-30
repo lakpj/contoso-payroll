@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
+  SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection
   RESOURCEGROUP_NAME: 'lakolk-test-rg'
   LOCATION: 'westeurope'
 
@@ -29,7 +29,7 @@ stages:
     steps:
     - task: AzureResourceGroupDeployment@2
       inputs:
-        azureSubscription: 
+        azureSubscription: $(SERVICE_CONNECTION)
         action: Create
         resourceGroupName: $(RESOURCEGROUP_NAME)
         location: $(LOCATION)
