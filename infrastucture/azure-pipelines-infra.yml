@@ -3,6 +3,11 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+- name: ResourceGroupName
+  displayName: Resource Group Name
+  type: string
+
 variables:
   SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection
   RESOURCEGROUP_NAME: 'lakolk-test-rg'
@@ -35,6 +40,6 @@ stages:
             inputs:
               azureSubscription: $(SERVICE_CONNECTION)
               action: 'Create Or Update Resource Group'
-              resourceGroupName: $(RESOURCEGROUP_NAME)
+              resourceGroupName: '${{ parameters.ResourceGroupName }}'
               location: $(LOCATION)
               deploymentMode: 'Incremental'
