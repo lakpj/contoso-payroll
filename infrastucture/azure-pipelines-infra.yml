@@ -34,9 +34,9 @@ stages:
     steps:
     - checkout: self
     - task: AzureResourceGroupDeployment@2
-        inputs:
-          azureSubscription: $(SERVICE_CONNECTION)
-          action: 'Create Or Update Resource Group'
-          resourceGroupName: '${{ parameters.ResourceGroupName }}'
-          location: $(LOCATION)
-          deploymentMode: 'Incremental'
+      inputs:
+        azureSubscription: $(SERVICE_CONNECTION)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '${{ parameters.ResourceGroupName }}'
+        location: $(LOCATION)
+        deploymentMode: 'Incremental'
