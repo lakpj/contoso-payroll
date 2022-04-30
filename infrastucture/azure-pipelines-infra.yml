@@ -59,3 +59,22 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/infrastucture
         inlineScript: |
           az webapp create --resource-group $(RESOURCEGROUP_NAME) --plan $(APP_SERV_PLAN) --name $(APP_NAME) --multicontainer-config-type compose --multicontainer-config-file docker-compose-payroll.yml
+- stage: EnableMonitoringToWebapp 
+  dependsOn:
+  - DeployWebappToServicePlan
+  condition: succeeded('DeployWebappToServicePlan')
+  jobs:
+  - job: EnableMonitoring 
+    displayName: 'Enable Monitoring To Webapp'
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        azureResourceManagerConnection: $(SERVICE_CONNECTION)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(RESOURCEGROUP_NAME)'
+        location: $(LOCATION)
+        deploymentMode: 'Incremental'
+        templateLocation : 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppMonitoring/azuredeploy.json'
+        deploymentScope: 'Resource Group'    
+        deploymentName: 'DeployMonitoring'
