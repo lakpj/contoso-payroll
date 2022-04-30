@@ -40,3 +40,5 @@ stages:
         resourceGroupName: '${{ parameters.ResourceGroupName }}'
         location: $(LOCATION)
         deploymentMode: 'Incremental'
+        templateLocation : 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
