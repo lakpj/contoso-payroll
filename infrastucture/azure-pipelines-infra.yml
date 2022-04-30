@@ -13,6 +13,7 @@ variables:
   RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
   LOCATION: 'westeurope'
   APP_SERV_PLAN: 'payroll-app-serv-plan'
+  APP_NAME: 'contoso-payroll-app'
 
 trigger:
   branches:
@@ -57,7 +58,4 @@ stages:
         scriptLocation: inlineScript
         workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure
         inlineScript: |
-          az webapp create --resource-group $(RESOURCEGROUP_NAME) \
-          --plan myAppServicePlan --name $(APP_SERV_PLAN) \
-          --multicontainer-config-type compose \
-          --multicontainer-config-file docker-compose-payroll.yml
+          az webapp create --resource-group $(RESOURCEGROUP_NAME) --plan $(APP_SERV_PLAN) --name $(APP_NAME) --multicontainer-config-type compose --multicontainer-config-file docker-compose-payroll.yml
