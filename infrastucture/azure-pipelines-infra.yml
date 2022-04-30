@@ -48,7 +48,7 @@ stages:
     steps:
     - task: AzureResourceGroupDeployment@2
       inputs:
-        azureResourceManagerConnection: $(SERVICE_CONNECTION)
+        azureSubscription: $(SERVICE_CONNECTION)
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(RESOURCEGROUP_NAME)'
         location: $(LOCATION)
