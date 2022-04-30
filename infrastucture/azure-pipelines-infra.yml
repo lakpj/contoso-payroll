@@ -10,8 +10,9 @@ parameters:
 
 variables:
   SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection
-  RESOURCEGROUP_NAME: 'lakolk-test-rg'
+  RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
   LOCATION: 'westeurope'
+  APP_SERV_PLAN: 'payroll-app-serv-plan'
 
 trigger:
   branches:
@@ -36,7 +37,7 @@ stages:
       inputs:
         azureSubscription: $(SERVICE_CONNECTION)
         action: 'Create Or Update Resource Group'
-        resourceGroupName: '${{ parameters.ResourceGroupName }}'
+        resourceGroupName: '$(RESOURCEGROUP_NAME)'
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
@@ -49,6 +50,9 @@ stages:
         azureSubscription: $(SERVICE_CONNECTION)
         scriptType: ps
         scriptLocation: inlineScript
+        workingDirectory: $(System.DefaultWorkingDirectory)/infrastructure
         inlineScript: |
-          az --version
-          az account show
+          az webapp create --resource-group $(RESOURCEGROUP_NAME) \
+          --plan myAppServicePlan --name $(APP_SERV_PLAN) \
+          --multicontainer-config-type compose \
+          --multicontainer-config-file docker-compose-payroll.yml

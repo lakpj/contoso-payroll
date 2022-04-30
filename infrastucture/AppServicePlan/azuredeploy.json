@@ -4,7 +4,7 @@
     "parameters": {
         "serverFarmsPlanName": {
             "type": "string",
-            "defaultValue": "[concat('payroll-app-serv', resourceGroup().name)]",
+            "defaultValue": "payroll-app-serv-plan",
             "metadata": {
                 "description": "app service plan name"
             }
