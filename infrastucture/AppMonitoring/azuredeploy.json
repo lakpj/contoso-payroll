@@ -15,12 +15,19 @@
         "metadata": {
           "description": "Name that will be used to build associated artifacts"
         }
+      },
+       "logAnalyticsName": {
+        "type": "string",
+        "defaultValue": "contoso-payroll-la",
+        "metadata": {
+          "description": "Name that will be used to build associated artifacts"
+        }
       }
     },
     "variables": {
       "webSiteName": "[parameters('appName')]",
       "appInsightName": "[toLower(format('appi-{0}', parameters('appName')))]",
-      "logAnalyticsName": "[toLower(format('la-{0}', parameters('appName')))]"
+      "logAnalyticsName": "[parameters('logAnalyticsName')]"
     },
     "resources": [       
       {
@@ -32,13 +39,13 @@
         },
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-          "[resourceId('Microsoft.Web/sites/siteextensions', variables('webSiteName'), 'type-siteextensions')]"
+          "[resourceId('Microsoft.Web/sites/siteextensions', variables('webSiteName'), 'site-extensions')]"
         ]
       },
       {
         "type": "Microsoft.Web/sites/siteextensions",
         "apiVersion": "2020-06-01",
-        "name": "[format('{0}/{1}', variables('webSiteName'), 'type-siteextensions')]",
+        "name": "[format('{0}/{1}', variables('webSiteName'), 'site-extensions')]",
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
         ]
@@ -80,30 +87,6 @@
         "properties": {
           "Application_Type": "web",
           "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
-        },
-        "dependsOn": [
-          "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
-        ]
-      },
-      {
-        "type": "Microsoft.OperationalInsights/workspaces",
-        "apiVersion": "2020-08-01",
-        "name": "[variables('logAnalyticsName')]",
-        "location": "[parameters('location')]",
-        "tags": {
-          "displayName": "Log Analytics",
-          "ProjectName": "[parameters('appName')]"
-        },
-        "properties": {
-          "sku": {
-            "name": "PerGB2018"
-          },
-          "retentionInDays": 120,
-          "features": {
-            "searchVersion": 1,
-            "legacy": 0,
-            "enableLogAccessUsingOnlyResourcePermissions": true
-          }
         }
       }
     ]

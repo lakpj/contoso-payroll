@@ -43,6 +43,20 @@ stages:
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
+  - job: DeployLogAnalyticsWorkspace 
+    displayName: 'Deploy LogAnalytics Workspace'
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        azureResourceManagerConnection: $(SERVICE_CONNECTION)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(RESOURCEGROUP_NAME)'
+        location: $(LOCATION)
+        deploymentMode: 'Incremental'
+        templateLocation : 'URL of the file'
+        csmFileLink: 'https://github.com/lakpj/contoso-payroll/blob/infra-pipeline/infrastucture/LogAnalyticsWorkspace/azuredeploy.json'
+        deploymentScope: 'Resource Group'    
+        deploymentName: 'DeployLOgAnalytics'
 - stage: DeployWebappToServicePlan 
   dependsOn:
   - DeployPayrollBaseInfrastructure
