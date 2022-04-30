@@ -13,7 +13,7 @@ variables:
   RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
   LOCATION: 'westeurope'
   APP_SERV_PLAN: 'payroll-app-serv-plan'
-  APP_NAME: 'contoso-payroll-app'
+  APP_NAME: 'contoso-payroll-webapp'
 
 trigger:
   branches:
