@@ -28,9 +28,8 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-- stage: DeployPayrollBaseInfrastructure 
-  displayName: 'Deploy Payroll Base Infrastructure'
-  jobs:
+#- stage: DeployAppServicePlan
+#  jobs:
   # - job: DeployAppServicePlan 
   #   displayName: 'Deploy AppService Plan'
   #   steps:
@@ -43,6 +42,8 @@ stages:
   #       deploymentMode: 'Incremental'
   #       templateLocation : 'URL of the file'
   #       csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
+- stage: DeployLogAnalyticsWorkspace 
+  jobs: 
   - job: DeployLogAnalyticsWorkspace 
     displayName: 'Deploy LogAnalytics Workspace'
     steps:
