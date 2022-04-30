@@ -80,7 +80,7 @@
             "owner": "[parameters('owner')]",
             "environment": "[parameters('environment')]"
         },
-        "LAAName": "[concat(parameters('logAnalyticsWorkspaceName'),'-',uniqueString(resourceGroup().id))]"
+        "LAAName": "[parameters('logAnalyticsWorkspaceName')]"
     },
     "resources": [
         {
@@ -91,6 +91,8 @@
             "tags": "[union(variables('requiredTags'),parameters('tags'))]",
             "properties": {
                 "features": {
+                    "searchVersion": 1,
+                    "legacy": 0,
                     "enableLogAccessUsingOnlyResourcePermissions": "[parameters('resourcePermissions')]"
                 },
                 "sku": {
