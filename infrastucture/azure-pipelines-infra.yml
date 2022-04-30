@@ -42,6 +42,8 @@ stages:
          deploymentMode: 'Incremental'
          templateLocation : 'URL of the file'
          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
+         csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.parameters.json'
+         deploymentName: 'DeployAppService'
 # - stage: DeployLogAnalyticsWorkspace 
 #   jobs: 
 #   - job: DeployLogAnalyticsWorkspace 
@@ -90,5 +92,6 @@ stages:
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppMonitoring/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppMonitoring/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployMonitoring'

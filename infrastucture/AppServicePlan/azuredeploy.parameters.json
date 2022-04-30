@@ -12,10 +12,46 @@
             "value": "3"
         },
         "owner": {
-            "value": "first.lastname@visolit.se"
+            "value": "first.lastname@gmail.com"
         },        
         "environment": {
             "value": "Development"
-        }
+        },
+        "sku_tier": {           
+            "value": "Basic"            
+        },
+        "sku_size": {
+            "value": "B1"
+        },
+        "sku_family": {
+            "value": "B"
+        },
+        "serverOS": {
+            "value": "Linux"
+        },       
+        "minimumCapacity": {
+            "value": 1
+        },
+        "maximumCapacity": {
+            "value": 5
+        },    
+        "metricName": {
+            "value": "CpuPercentage"
+        },
+        "metricThresholdToScaleOut": {
+            "value": 60
+        },
+        "metricThresholdToScaleIn": {
+            "value": 20
+        },
+        "changePercentScaleOut": {
+            "value": 1
+        },
+        "changePercentScaleIn": {
+            "value": 1
+        },
+        "autoscaleEnabled": {
+            "value": true
+        }   
     }
 }
