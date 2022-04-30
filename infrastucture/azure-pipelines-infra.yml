@@ -42,6 +42,11 @@ stages:
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
+- stage: DeployWebappToServicePlan 
+  dependsOn:
+  - DeployPayrollBaseInfrastructure
+  condition: succeeded('DeployPayrollBaseInfrastructure')
+  jobs:  
   - job: DeployWebappToServicePlan 
     displayName: 'Deploy Webapp To Application Service Plan'
     steps:
