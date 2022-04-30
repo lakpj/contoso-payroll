@@ -3,8 +3,8 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverFarmsPlanName": {
-            "type": "string", 
-            "defaultValue": "[concat('app-serv-plan-contoso-payroll-', '[resourceGroup().name]')]",
+            "type": "string",
+            "defaultValue": "[concat('app-serv-plan-cont-pay-', resourceGroup().name)]",
             "metadata": {
                 "description": "app service plan name"
             }
