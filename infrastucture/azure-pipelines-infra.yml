@@ -21,8 +21,8 @@ pool:
   vmImage: windows-latest
 
 stages:
-- stage: BuildPayrollInfrastructure 
-  displayName: 'Build Payroll Infrastructure'
+- stage: DeployPayrollBaseInfrastructure 
+  displayName: 'Deploy Payroll BaseInfrastructure'
   jobs:
   - job: ResourceGroup
     displayName: 'Create Resource Group'
@@ -30,6 +30,6 @@ stages:
     - task: AzureResourceGroupDeployment@2
       inputs:
         azureSubscription: $(SERVICE_CONNECTION)
-        action: Create
+        action: 'Create Or Update Resource Group'
         resourceGroupName: $(RESOURCEGROUP_NAME)
         location: $(LOCATION)
