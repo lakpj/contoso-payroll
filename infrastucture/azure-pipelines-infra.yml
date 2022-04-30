@@ -24,12 +24,17 @@ stages:
 - stage: DeployPayrollBaseInfrastructure 
   displayName: 'Deploy Payroll BaseInfrastructure'
   jobs:
-  - job: ResourceGroup
+  - deployment: Deploy 
     displayName: 'Create Resource Group'
-    steps:
-    - task: AzureResourceGroupDeployment@2
-      inputs:
-        azureSubscription: $(SERVICE_CONNECTION)
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: $(RESOURCEGROUP_NAME)
-        location: $(LOCATION)
+    strategy:
+      runOnce:
+        deploy: 
+          steps:
+          - checkout: self
+          - task: AzureResourceGroupDeployment@2
+            inputs:
+              azureSubscription: $(SERVICE_CONNECTION)
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: $(RESOURCEGROUP_NAME)
+              location: $(LOCATION)
+              deploymentMode: 'Incremental'
