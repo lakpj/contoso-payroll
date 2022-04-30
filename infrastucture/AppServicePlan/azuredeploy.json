@@ -3,9 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverFarmsPlanName": {
-            "type": "string",
+            "type": "string", 
+            "defaultValue": "[concat('app-serv-plan-contoso-payroll-', '[resourceGroup().name]')]",
             "metadata": {
-                "description": "description"
+                "description": "app service plan name"
             }
         },
         "location": {
@@ -17,13 +18,35 @@
         },
         "sku_name": {
             "type": "string",
+            "defaultValue": "B1",
+            "metadata": {
+                "description": "Required. Defines the name, tier, size, family and capacity of the App Service Plan."
+            }
+        },
+        "sku_tier": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "metadata": {
+                "description": "Required. Defines the name, tier, size, family and capacity of the App Service Plan."
+            }
+        },
+        "sku_size": {
+            "type": "string",
+            "defaultValue": "B1",
+            "metadata": {
+                "description": "Required. Defines the name, tier, size, family and capacity of the App Service Plan."
+            }
+        },
+        "sku_family": {
+            "type": "string",
+            "defaultValue": "B",
             "metadata": {
                 "description": "Required. Defines the name, tier, size, family and capacity of the App Service Plan."
             }
         },
         "capacity": {
             "type": "string",
-            "defaultValue": "3",
+            "defaultValue": "1",
             "metadata": {
                 "description": "Defines the App Service plan's Instance count"
             }
@@ -42,12 +65,14 @@
 
         "owner": {
             "type": "string",
+            "defaultValue": "owner@azure.com",
             "metadata": {
                 "description": "Required. Owner tag of the resource"
             }
         },        
         "environment": {
             "type": "string",
+            "defaultValue": "developement",
             "metadata": {
                 "description": "Required. Environment tag of the resource"
             }
@@ -64,16 +89,28 @@
         {
             "name": "[parameters('serverFarmsPlanName')]",
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2020-09-01",
+            "apiVersion": "2021-03-01",
             "kind": "[parameters('serverOS')]",
             "location": "[parameters('location')]",
             "tags": "[variables('requiredTags')]",
             "sku": {
                 "name": "[parameters('sku_name')]",
-                "capacity": "[parameters('capacity')]"
+                "capacity": "[parameters('capacity')]",               
+                "tier": "[parameters('sku_tier')]",
+                "size": "[parameters('sku_size')]",
+                "family": "[parameters('sku_family')]"               
             },
             "properties": {
-                "reserved": "[equals(parameters('serverOS'), 'Linux')]"
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
             }
         }
     ],
