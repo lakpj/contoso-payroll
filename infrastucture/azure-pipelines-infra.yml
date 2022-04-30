@@ -27,12 +27,11 @@ pool:
 
 stages:
 - stage: DeployPayrollBaseInfrastructure 
-  displayName: 'Deploy Payroll BaseInfrastructure'
+  displayName: 'Deploy Payroll Base Infrastructure'
   jobs:
-  - job: Deploy 
-    displayName: 'Create Resource Group'
+  - job: DeployAppServicePlan 
+    displayName: 'Deploy AppService Plan'
     steps:
-    - checkout: self
     - task: AzureResourceGroupDeployment@2
       inputs:
         azureSubscription: $(SERVICE_CONNECTION)
@@ -42,3 +41,13 @@ stages:
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
+  - job: DeployWebappToServicePlan 
+    displayName: 'Deploy Webapp To Application Service Plan'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(SERVICE_CONNECTION)
+        scriptType: ps
+        scriptLocation: inlineScript
+        inlineScript: |
+          az --version
+          az account show

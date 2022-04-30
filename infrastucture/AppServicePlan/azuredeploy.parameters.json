@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverFarmsPlanName": {
+            "value": "anwojtestserviceplan" 
+        },
+        "sku_name": {
+            "value": "B2" 
+        },
+        "capacity": {
+            "value": "3"
+        },
+        "owner": {
+            "value": "first.lastname@visolit.se"
+        },
+        "businessImpactAccessCode": {
+            "value": "1"
+        },
+        "environment": {
+            "value": "Development"
+        }
+    }
+}
