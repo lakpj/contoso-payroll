@@ -40,7 +40,7 @@
         "apiVersion": "2020-06-01",
         "name": "[format('{0}/{1}', variables('webSiteName'), 'Microsoft.ApplicationInsights.AzureWebSites')]",
         "dependsOn": [
-          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
+          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
         ]
       },
       {
