@@ -4,7 +4,7 @@
     "parameters": {
         "logAnalyticsWorkspaceName": {
             "type": "string",
-            "defaultValue": "contoso-payroll-la",
+            "defaultValue": "contosoPayrollLa",
             "metadata": {
                 "description": "Required. Name of the Log Analytics workspace"
             }
@@ -81,8 +81,6 @@
             "environment": "[parameters('environment')]"
         },
         "LAAName": "[concat(parameters('logAnalyticsWorkspaceName'),'-',uniqueString(resourceGroup().id))]"
-
-
     },
     "resources": [
         {
