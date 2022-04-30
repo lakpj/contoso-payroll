@@ -43,6 +43,7 @@ stages:
         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
   - job: DeployWebappToServicePlan 
     displayName: 'Deploy Webapp To Application Service Plan'
+    steps:
     - task: AzureCLI@2
       inputs:
         azureSubscription: $(SERVICE_CONNECTION)
