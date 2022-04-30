@@ -32,13 +32,13 @@
         },
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-          "[resourceId('Microsoft.Web/sites/siteextensions', variables('webSiteName'), 'Microsoft.ApplicationInsights.AzureWebSites')]"
+          "[resourceId('Microsoft.Web/sites/siteextensions', variables('webSiteName'), 'type-siteextensions')]"
         ]
       },
       {
         "type": "Microsoft.Web/sites/siteextensions",
         "apiVersion": "2020-06-01",
-        "name": "[format('{0}/{1}', variables('webSiteName'), 'Microsoft.ApplicationInsights.AzureWebSites')]",
+        "name": "[format('{0}/{1}', variables('webSiteName'), 'type-siteextensions')]",
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
         ]
