@@ -3,17 +3,33 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+variables:
+  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
+  RESOURCEGROUP_NAME: 'lakolk-test-rg'
+  LOCATION: 'westeurope'
+
 trigger:
-- main
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - infrastucture/*
+    - azure-pipelines-infra.yml
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: BuildPayrollInfrastructure 
+  displayName: 'Build Payroll Infrastructure'
+  jobs:
+  - job: ResourceGroup
+    displayName: 'Create Resource Group'
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      inputs:
+        azureSubscription: 
+        action: Create
+        resourceGroupName: $(RESOURCEGROUP_NAME)
+        location: $(LOCATION)
