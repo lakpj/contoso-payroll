@@ -62,7 +62,6 @@
                 "description": "Optional. Kind of server OS."
             }
         },
-
         "owner": {
             "type": "string",
             "defaultValue": "owner@azure.com",

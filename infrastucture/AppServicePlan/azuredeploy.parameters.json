@@ -13,10 +13,7 @@
         },
         "owner": {
             "value": "first.lastname@visolit.se"
-        },
-        "businessImpactAccessCode": {
-            "value": "1"
-        },
+        },        
         "environment": {
             "value": "Development"
         }
