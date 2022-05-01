@@ -273,7 +273,7 @@
                             },
                             "name": "Metric1",
                             "metricNamespace": "Microsoft.Web/serverFarms",
-                            "metricName": "CpuPercentage",
+                            "metricName": "CPU percentage",
                             "dimensions": [
                                 {
                                     "name": "Instance",

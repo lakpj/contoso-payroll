@@ -135,7 +135,7 @@
                 "threshold": 5,
                 "name": "Metric1",
                 "metricNamespace": "Microsoft.Web/sites",
-                "metricName": "CpuTime",
+                "metricName": "CPU Time",
                 "operator": "GreaterThan",
                 "timeAggregation": "Total",
                 "criterionType": "StaticThresholdCriterion"
