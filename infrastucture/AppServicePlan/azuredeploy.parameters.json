@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverFarmsPlanName": {
+            "value": "payroll-app-serv-plan" 
+        },
+        "sku_name": {
+            "value": "B1" 
+        },
+        "capacity": {
+            "value": "3"
+        },
+        "owner": {
+            "value": "first.lastname@gmail.com"
+        },        
+        "environment": {
+            "value": "Development"
+        },
+        "sku_tier": {           
+            "value": "Basic"            
+        },
+        "sku_size": {
+            "value": "B1"
+        },
+        "sku_family": {
+            "value": "B"
+        },
+        "serverOS": {
+            "value": "Linux"
+        },       
+        "minimumCapacity": {
+            "value": 1
+        },
+        "maximumCapacity": {
+            "value": 5
+        },    
+        "autoscaleMetricName": {
+            "value": "CpuPercentage"
+        },       
+        "metricThresholdToScaleOut": {
+            "value": 60
+        },
+        "metricThresholdToScaleIn": {
+            "value": 20
+        },
+        "changePercentScaleOut": {
+            "value": 1
+        },
+        "changePercentScaleIn": {
+            "value": 1
+        },
+        "autoscaleEnabled": {
+            "value": true
+        }
+    }
+}

@@ -1,0 +1,233 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {        
+      "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      },
+       "serverFarmsPlanName": {
+            "type": "string",
+            "defaultValue": "payroll-app-serv-plan",
+            "metadata": {
+                "description": "app service plan name"
+            }
+        },
+      "appName": {
+        "type": "string",
+        "defaultValue": "contoso-payroll-webapp",
+        "metadata": {
+          "description": "Name that will be used to build associated artifacts"
+        }
+      },
+      "metricAlerts_app_total_cpu_time_name": {
+            "defaultValue": "app-total-cpu-time",
+            "type": "String"
+      },
+      "actionGroupName": {
+        "type": "String",
+        "metadata": {
+          "description": "Id of the action group to which the alert should be sent. Subscription Id should be changed in azuredeploy.parameters.json"
+        }
+      },
+      "actionGroupShortName": {
+        "type": "String",
+        "metadata": {
+          "description": "Id of the action group to which the alert should be sent. Subscription Id should be changed in azuredeploy.parameters.json"
+        }
+      },
+      "emails": {
+        "type": "array",
+        "metadata": {
+          "description": "Id of the action group to which the alert should be sent. Subscription Id should be changed in azuredeploy.parameters.json"
+        }
+      }
+    },
+    "variables": {
+      "webSiteName": "[parameters('appName')]",
+      "appInsightName": "[toLower(format('appi-{0}', parameters('appName')))]",
+      "logAnalyticsName": "[toLower(format('la-{0}', parameters('appName')))]",
+      "appServicePlanName": "[parameters('serverFarmsPlanName')]"
+    },
+    "resources": [            
+      {
+        "name": "[parameters('actionGroupName')]",
+        "type": "microsoft.insights/actionGroups",
+        "apiVersion": "2019-06-01",
+        "location": "global",
+        "properties": {
+          "groupShortName": "[parameters('actionGroupShortName')]",
+          "enabled": true,
+          "emailReceivers": [
+            {
+              "name": "main-group",
+              "emailAddress": "[parameters('emails')[0]]",
+              "useCommonAlertSchema": true
+            }
+          ]
+        }
+      },
+      {
+        "type": "Microsoft.Web/sites/config",
+        "apiVersion": "2020-06-01",
+        "name": "[format('{0}/{1}', variables('webSiteName'), 'appsettings')]",
+        "properties": {
+          "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName'))).InstrumentationKey]"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
+        ]
+      },
+      {
+        "type": "Microsoft.Web/sites/config",
+        "apiVersion": "2020-06-01",
+        "name": "[format('{0}/{1}', variables('webSiteName'), 'logs')]",
+        "properties": {
+          "applicationLogs": {
+            "fileSystem": {
+              "level": "Warning"
+            }
+          },
+          "httpLogs": {
+            "fileSystem": {
+              "retentionInMb": 40,
+              "enabled": true
+            }
+          },
+          "failedRequestsTracing": {
+            "enabled": true
+          },
+          "detailedErrorMessages": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "type": "Microsoft.Insights/components",
+        "apiVersion": "2020-02-02",
+        "name": "[variables('appInsightName')]",
+        "location": "[parameters('location')]",
+        "kind": "web",
+        "tags": {
+          "displayName": "AppInsight",
+          "ProjectName": "[parameters('appName')]"
+        },
+        "properties": {
+          "Application_Type": "web",
+          "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
+        ]
+      },
+      {
+        "type": "Microsoft.OperationalInsights/workspaces",
+        "apiVersion": "2020-08-01",
+        "name": "[variables('logAnalyticsName')]",
+        "location": "[parameters('location')]",
+        "tags": {
+          "displayName": "Log Analytics",
+          "ProjectName": "[parameters('appName')]"
+        },
+        "properties": {
+          "sku": {
+            "name": "PerGB2018"
+          },
+          "retentionInDays": 120,
+          "features": {
+            "searchVersion": 1,
+            "legacy": 0,
+            "enableLogAccessUsingOnlyResourcePermissions": true
+          }
+        }
+      },
+      {
+        "type": "microsoft.insights/metricAlerts",
+        "apiVersion": "2018-03-01",
+        "name": "[parameters('metricAlerts_app_total_cpu_time_name')]",
+        "location": "global",
+        "properties": {
+          "description": "[parameters('metricAlerts_app_total_cpu_time_name')]",
+          "severity": 3,
+          "enabled": true,
+          "scopes": [
+            "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
+          ],
+          "evaluationFrequency": "PT5M",
+          "windowSize": "PT5M",
+          "criteria": {
+            "allOf": [
+              {
+                "threshold": 5,
+                "name": "Metric1",
+                "metricNamespace": "Microsoft.Web/sites",
+                "metricName": "CpuPercentage",
+                "operator": "GreaterThan",
+                "timeAggregation": "Total",
+                "criterionType": "StaticThresholdCriterion"
+              }
+            ],
+            "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+          },
+          "autoMitigate": true,
+          "targetResourceType": "Microsoft.Web/sites",
+          "actions": [
+            {
+              "actionGroupId": "[resourceId('microsoft.insights/actionGroups',parameters('actionGroupName'))]",
+              "webHookProperties": {}
+            }
+          ]
+        },
+        "dependsOn": [
+          "[resourceId('microsoft.insights/actionGroups',parameters('actionGroupName'))]"
+        ]
+      },    
+      { 
+        "name": "[concat('The average CPU is high across all the instances of ', variables('appServicePlanName'))]",
+        "type": "Microsoft.Insights/metricAlerts",
+        "apiVersion": "2018-03-01",
+        "location": "global",
+        "tags": {
+          "[concat('hidden-link:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', variables('appServicePlanName'))]": "Resource"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
+          "[resourceId('microsoft.insights/actionGroups',parameters('actionGroupName'))]"
+        ],        
+        "properties": {
+          "severity": 1,
+          "enabled": true,
+          "scopes": [
+            "[resourceId('Microsoft.Web/serverfarms/', variables('appServicePlanName'))]"
+          ],
+          "targetResourceType" : "Microsoft.Web/serverfarms",
+          "targetResourceRegion": "[parameters('location')]",
+          "evaluationFrequency": "PT1M",
+          "windowSize": "PT5M",
+          "criteria": {
+            "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+            "allOf": [
+              {
+                "name": "[concat('Microsoft.Web/serverfarms/', variables('appServicePlanName'), '-cpupercentage')]",
+                "metricName": "CpuPercentage",
+                "operator": "GreaterThan",
+                "threshold": 90,
+                "timeAggregation": "Average",
+                "criterionType": "StaticThresholdCriterion"
+              }
+            ],
+          "metricName": "[concat('The average CPU is high across all the instances of ', variables('appServicePlanName'))]",
+          "componentId": "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
+          },
+          "actions": [
+            {
+              "actionGroupId": "[resourceId('microsoft.insights/actionGroups',parameters('actionGroupName'))]"
+            }
+          ]
+        }
+      }
+    ]
+  }
