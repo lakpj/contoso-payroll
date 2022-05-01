@@ -1,14 +1,15 @@
-version: "3.3"
+version: "3"
 services:
   backend:
-    image: "lakpriyagk/contoso-payroll-backend:34"
+    image: "contoso-payroll-backend:34"
     container_name: "backend"
     ports:
       - "8080:8080"
-    restart: always
 
   frontend:
-    image: "lakpriyagk/contoso-payroll-frontend:56"
+    image: "contoso-payroll-frontend:56"
     container_name: "frontend"
+    ports:
+      - "80:80"
     depends_on:
       - backend
