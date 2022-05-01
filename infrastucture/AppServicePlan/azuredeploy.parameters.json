@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverFarmsPlanName": {
-            "value": "anwojtestserviceplan" 
+            "value": "payroll-app-serv-plan" 
         },
         "sku_name": {
             "value": "B2" 
