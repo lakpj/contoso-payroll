@@ -35,9 +35,9 @@
         "maximumCapacity": {
             "value": 5
         },    
-        "metricName": {
+        "autoscaleMetricName": {
             "value": "CpuPercentage"
-        },
+        },       
         "metricThresholdToScaleOut": {
             "value": 60
         },
@@ -52,15 +52,6 @@
         },
         "autoscaleEnabled": {
             "value": true
-        },
-        "metricAlerts_cpu_percentage_payroll_app_serv_plan_name": {
-            "value": "cpu-percentage-payroll-app-serv-plan"
-        },
-        "serverFarms_payroll_app_serv_plan_externalid": {
-            "value": "/subscriptions/33a504d4-d730-43cf-8bf2-923c0686fcae/resourceGroups/contoso-rg/providers/Microsoft.Web/serverFarms/payroll-app-serv-plan"
-        },
-        "actionGroups_action_group_email_externalid": {
-            "value": "/subscriptions/33a504d4-d730-43cf-8bf2-923c0686fcae/resourceGroups/contoso-rg/providers/microsoft.insights/actionGroups/action-group-email"
-        }   
+        }
     }
 }
