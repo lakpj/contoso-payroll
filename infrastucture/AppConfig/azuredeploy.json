@@ -20,10 +20,7 @@
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/ftp')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
-            ],
+            "location": "[parameters('location')]",            
             "properties": {
                 "allow": true
             }
@@ -32,10 +29,7 @@
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/scm')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
-            ],
+            "location": "[parameters('location')]",            
             "properties": {
                 "allow": true
             }
@@ -44,10 +38,7 @@
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/web')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
-            ],
+            "location": "[parameters('location')]",            
             "properties": {
                 "numberOfWorkers": 1,
                 "defaultDocuments": [
@@ -125,10 +116,7 @@
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/', parameters('appName'), '.azurewebsites.net')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
-            ],
+            "location": "[parameters('location')]",            
             "properties": {
                 "siteName": "contoso-payroll-app",
                 "hostNameType": "Verified"
