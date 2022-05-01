@@ -1,13 +1,19 @@
 version: "3"
 services:
   backend:
-    image: "lakpriyagk/contoso-payroll-backend:34"
+    image: "lakpriyagk/contoso-payroll-backend:34"   
     container_name: "backend"
     ports:
       - "8080:8080"
 
   frontend:
-    image: "lakpriyagk/contoso-payroll-frontend:56"
     container_name: "frontend"
+    image: "contoso-payroll-frontend"
+    build: 
+      context: .
+      args:
+        - 'REACT_APP_API_BASE_URL=http://127.0.0.1:8080/api'
+    ports:
+        - "9090:80"
     depends_on:
       - backend
