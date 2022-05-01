@@ -12,10 +12,10 @@
         "value": "app-total-cpu-time"        
       },
       "sites_contoso_payroll_app_externalid": {
-        "value": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/Microsoft.Web/sites/contoso-payroll-app"
+        "value": "/subscriptions/33a504d4-d730-43cf-8bf2-923c0686fcae/resourceGroups/contoso-payroll-rg/providers/Microsoft.Web/sites/contoso-payroll-app"
       },
       "actionGroups_email_notifications_externalid": {
-        "value": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/microsoft.insights/actionGroups/email-notifications"
+        "value": "/subscriptions/33a504d4-d730-43cf-8bf2-923c0686fcae/resourceGroups/contoso-payroll-rg/providers/microsoft.insights/actionGroups/email-notifications"
       }
     }
   }

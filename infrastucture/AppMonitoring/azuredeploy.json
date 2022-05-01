@@ -21,11 +21,9 @@
             "type": "String"
       },
         "sites_contoso_payroll_app_externalid": {
-            "defaultValue": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/Microsoft.Web/sites/contoso-payroll-app",
             "type": "String"
       },
         "actionGroups_email_notifications_externalid": {
-            "defaultValue": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/microsoft.insights/actionGroups/email-notifications",
             "type": "String"
       }
     },
@@ -46,14 +44,14 @@
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
         ]
       },
-      {
-        "type": "Microsoft.Web/sites/siteextensions",
-        "apiVersion": "2020-06-01",
-        "name": "[format('{0}/{1}', variables('webSiteName'), 'ApplicationInsights')]",
-        "dependsOn": [
-          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
-        ]
-      },
+      // {
+      //   "type": "Microsoft.Web/sites/siteextensions",
+      //   "apiVersion": "2020-06-01",
+      //   "name": "[format('{0}/{1}', variables('webSiteName'), 'ApplicationInsights')]",
+      //   "dependsOn": [
+      //     "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
+      //   ]
+      // },
       {
         "type": "Microsoft.Web/sites/config",
         "apiVersion": "2020-06-01",
