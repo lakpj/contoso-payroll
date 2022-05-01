@@ -75,6 +75,25 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)/infrastucture
         inlineScript: |
           az webapp create --resource-group $(RESOURCEGROUP_NAME) --plan $(APP_SERV_PLAN) --name $(APP_NAME) --multicontainer-config-type compose --multicontainer-config-file docker-compose-payroll.yml
+  - job: ConfigWebappInServicePlan
+    dependsOn:
+    - DeployWebappToServicePlan
+    condition: succeeded('DeployWebappToServicePlan') 
+    displayName: 'Config Webapp In Service Plan'
+    steps:    
+    - task: AzureResourceManagerTemplateDeployment@3
+      dependsOn:
+      inputs:
+        azureResourceManagerConnection: $(SERVICE_CONNECTION)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(RESOURCEGROUP_NAME)'
+        location: $(LOCATION)
+        deploymentMode: 'Incremental'
+        templateLocation : 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppConfig/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppConfig/azuredeploy.parameters.json'
+        deploymentScope: 'Resource Group'    
+        deploymentName: 'ConfigWebapp'
 - stage: EnableMonitoringToWebapp 
   dependsOn:
   - DeployWebappToServicePlan

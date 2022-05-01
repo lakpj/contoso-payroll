@@ -34,7 +34,7 @@
       "appInsightName": "[toLower(format('appi-{0}', parameters('appName')))]",
       "logAnalyticsName": "[toLower(format('la-{0}', parameters('appName')))]"
     },
-    "resources": [       
+    "resources": [            
       {
         "type": "Microsoft.Web/sites/config",
         "apiVersion": "2020-06-01",
@@ -83,7 +83,7 @@
         "apiVersion": "2020-02-02",
         "name": "[variables('appInsightName')]",
         "location": "[parameters('location')]",
-        "kind": "string",
+        "kind": "web",
         "tags": {
           "displayName": "AppInsight",
           "ProjectName": "[parameters('appName')]"
