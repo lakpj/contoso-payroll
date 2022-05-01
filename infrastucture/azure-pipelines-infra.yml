@@ -28,22 +28,22 @@ pool:
   vmImage: windows-latest
 
 stages:
-- stage: DeployAppServicePlan
-  jobs:
-   - job: DeployAppServicePlan 
-     displayName: 'Deploy AppService Plan'
-     steps:
-     - task: AzureResourceGroupDeployment@2
-       inputs:
-         azureSubscription: $(SERVICE_CONNECTION)
-         action: 'Create Or Update Resource Group'
-         resourceGroupName: '$(RESOURCEGROUP_NAME)'
-         location: $(LOCATION)
-         deploymentMode: 'Incremental'
-         templateLocation : 'URL of the file'
-         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
-         csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.parameters.json'
-         deploymentName: 'DeployAppService'
+# - stage: DeployAppServicePlan
+#   jobs:
+#    - job: DeployAppServicePlan 
+#      displayName: 'Deploy AppService Plan'
+#      steps:
+#      - task: AzureResourceGroupDeployment@2
+#        inputs:
+#          azureSubscription: $(SERVICE_CONNECTION)
+#          action: 'Create Or Update Resource Group'
+#          resourceGroupName: '$(RESOURCEGROUP_NAME)'
+#          location: $(LOCATION)
+#          deploymentMode: 'Incremental'
+#          templateLocation : 'URL of the file'
+#          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
+#          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.parameters.json'
+#          deploymentName: 'DeployAppService'
 # - stage: DeployLogAnalyticsWorkspace 
 #   jobs: 
 #   - job: DeployLogAnalyticsWorkspace 
@@ -60,9 +60,9 @@ stages:
 #         csmFileLink: 'https://github.com/lakpj/contoso-payroll/blob/infra-pipeline/infrastucture/LogAnalyticsWorkspace/azuredeploy.json'
 #         deploymentName: 'DeployLogAnalytics'
 - stage: DeployWebappToServicePlan 
-  dependsOn:
-  - DeployAppServicePlan
-  condition: succeeded('DeployAppServicePlan')
+  # dependsOn:
+  # - DeployAppServicePlan
+  # condition: succeeded('DeployAppServicePlan')
   jobs:  
   - job: DeployWebappToServicePlan 
     displayName: 'Deploy Webapp To Application Service Plan'

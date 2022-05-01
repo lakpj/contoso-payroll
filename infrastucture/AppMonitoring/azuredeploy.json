@@ -31,8 +31,7 @@
           "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName'))).InstrumentationKey]"
         },
         "dependsOn": [
-          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-          "[resourceId('Microsoft.Web/sites/siteextensions', variables('webSiteName'), 'ApplicationInsights')]"
+          "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
         ]
       },
       {
