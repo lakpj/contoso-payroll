@@ -82,7 +82,6 @@ stages:
     displayName: 'Config Webapp In Service Plan'
     steps:    
     - task: AzureResourceManagerTemplateDeployment@3
-      dependsOn:
       inputs:
         azureResourceManagerConnection: $(SERVICE_CONNECTION)
         action: 'Create Or Update Resource Group'
