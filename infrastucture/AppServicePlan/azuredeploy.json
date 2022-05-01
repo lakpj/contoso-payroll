@@ -131,6 +131,25 @@
             "metadata": {
                 "description": "A boolean to indicate whether the autoscale policy is enabled or disabled."
             }
+        },        
+        "metricAlerts_cpu_percentage_payroll_app_serv_plan_name": {
+            "defaultValue": "cpu-percentage-payroll-app-serv-plan",
+            "type": "String",
+            "metadata": {
+                "description": "Metric alert name."
+            }
+        },
+        "serverFarms_payroll_app_serv_plan_externalid": {
+            "type": "String",
+            "metadata": {
+                "description": "Azure resource to which the Metric alert belongs to. Subscription Id should be changed in azuredeploy.parameters.json"
+            }
+        },
+        "actionGroups_action_group_email_externalid": {
+            "type": "String",
+            "metadata": {
+                "description": "Id of the action group to which the alert should be sent. Subscription Id should be changed in azuredeploy.parameters.json"
+            }
         }        
     },
     "variables": {
@@ -171,66 +190,116 @@
             }
         },
         {
-      "type": "Microsoft.Insights/autoscalesettings",
-      "name": "[variables('settingName')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverFarmsPlanName'))]"
-      ],
-      "apiVersion": "2014-04-01",
-      "location": "[parameters('location')]",
-      "properties": {
-        "profiles": [
-          {
-            "name": "DefaultAutoscaleProfile",
-            "capacity": {
-              "minimum": "[parameters('minimumCapacity')]",
-              "maximum": "[parameters('maximumCapacity')]",
-              "default": "[parameters('capacity')]"
-            },
-            "rules": [
-              {
-                "metricTrigger": {
-                  "metricName": "[parameters('metricName')]",
-                  "metricResourceUri": "[variables('targetResourceId')]",
-                  "timeGrain": "PT5M",
-                  "statistic": "Average",
-                  "timeWindow": "PT10M",
-                  "timeAggregation": "Average",
-                  "operator": "GreaterThan",
-                  "threshold": "[parameters('metricThresholdToScaleOut')]"
-                },
-                "scaleAction": {
-                  "direction": "Increase",
-                  "type": "ChangeCount",
-                  "value": "[parameters('changePercentScaleOut')]",
-                  "cooldown": "PT10M"
-                }
-              },
-              {
-                "metricTrigger": {
-                  "metricName": "[parameters('metricName')]",
-                  "metricResourceUri": "[variables('targetResourceId')]",
-                  "timeGrain": "PT5M",
-                  "statistic": "Average",
-                  "timeWindow": "PT10M",
-                  "timeAggregation": "Average",
-                  "operator": "LessThan",
-                  "threshold": "[parameters('metricThresholdToScaleIn')]"
-                },
-                "scaleAction": {
-                  "direction": "Decrease",
-                  "type": "ChangeCount",
-                  "value": "[parameters('changePercentScaleIn')]",
-                  "cooldown": "PT10M"
-                }
-              }
-            ]
-          }
+        "type": "Microsoft.Insights/autoscalesettings",
+        "name": "[variables('settingName')]",
+        "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', parameters('serverFarmsPlanName'))]"
         ],
-        "enabled": "[parameters('autoscaleEnabled')]",
-        "targetResourceUri": "[variables('targetResourceId')]"
-      }
-    }
+        "apiVersion": "2014-04-01",
+        "location": "[parameters('location')]",
+        "properties": {
+            "profiles": [
+            {
+                "name": "DefaultAutoscaleProfile",
+                "capacity": {
+                "minimum": "[parameters('minimumCapacity')]",
+                "maximum": "[parameters('maximumCapacity')]",
+                "default": "[parameters('capacity')]"
+                },
+                "rules": [
+                {
+                    "metricTrigger": {
+                    "metricName": "[parameters('metricName')]",
+                    "metricResourceUri": "[variables('targetResourceId')]",
+                    "timeGrain": "PT5M",
+                    "statistic": "Average",
+                    "timeWindow": "PT10M",
+                    "timeAggregation": "Average",
+                    "operator": "GreaterThan",
+                    "threshold": "[parameters('metricThresholdToScaleOut')]"
+                    },
+                    "scaleAction": {
+                    "direction": "Increase",
+                    "type": "ChangeCount",
+                    "value": "[parameters('changePercentScaleOut')]",
+                    "cooldown": "PT10M"
+                    }
+                },
+                {
+                    "metricTrigger": {
+                    "metricName": "[parameters('metricName')]",
+                    "metricResourceUri": "[variables('targetResourceId')]",
+                    "timeGrain": "PT5M",
+                    "statistic": "Average",
+                    "timeWindow": "PT10M",
+                    "timeAggregation": "Average",
+                    "operator": "LessThan",
+                    "threshold": "[parameters('metricThresholdToScaleIn')]"
+                    },
+                    "scaleAction": {
+                    "direction": "Decrease",
+                    "type": "ChangeCount",
+                    "value": "[parameters('changePercentScaleIn')]",
+                    "cooldown": "PT10M"
+                    }
+                }
+                ]
+            }
+            ],
+            "enabled": "[parameters('autoscaleEnabled')]",
+            "targetResourceUri": "[variables('targetResourceId')]"
+        }
+    },
+    {
+            "type": "microsoft.insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('metricAlerts_cpu_percentage_payroll_app_serv_plan_name')]",
+            "location": "global",
+            "properties": {
+                "severity": 3,
+                "enabled": true,
+                "scopes": [
+                    "[parameters('serverFarms_payroll_app_serv_plan_externalid')]"
+                ],
+                "evaluationFrequency": "PT5M",
+                "windowSize": "PT5M",
+                "criteria": {
+                    "allOf": [
+                        {
+                            "alertSensitivity": "Medium",
+                            "failingPeriods": {
+                                "numberOfEvaluationPeriods": 4,
+                                "minFailingPeriodsToAlert": 4
+                            },
+                            "name": "Metric1",
+                            "metricNamespace": "Microsoft.Web/serverFarms",
+                            "metricName": "CpuPercentage",
+                            "dimensions": [
+                                {
+                                    "name": "Instance",
+                                    "operator": "Include",
+                                    "values": [
+                                        "*"
+                                    ]
+                                }
+                            ],
+                            "operator": "GreaterThan",
+                            "timeAggregation": "Average",
+                            "criterionType": "DynamicThresholdCriterion"
+                        }
+                    ],
+                    "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+                },
+                "autoMitigate": true,
+                "targetResourceType": "Microsoft.Web/serverFarms",
+                "actions": [
+                    {
+                        "actionGroupId": "[parameters('actionGroups_action_group_email_externalid')]",
+                        "webHookProperties": {}
+                    }
+                ]
+            }
+        }
     ],
     "outputs": {
         "AppServicePlanResourceId": {
