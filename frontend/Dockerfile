@@ -8,6 +8,6 @@ COPY . ./
 RUN npm run build
 
 FROM nginx:stable-alpine
-COPY --from=build /frontend /usr/share/nginx/html
+COPY --from=build /frontend ./
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
