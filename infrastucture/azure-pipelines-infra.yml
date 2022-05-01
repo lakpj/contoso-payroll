@@ -9,7 +9,7 @@ parameters:
   type: string
 
 variables:
-  SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection
+  SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection-1
   RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
   LOCATION: 'westeurope'
   APP_SERV_PLAN: 'payroll-app-serv-plan'
