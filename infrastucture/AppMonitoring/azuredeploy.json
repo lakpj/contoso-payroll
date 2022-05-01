@@ -27,9 +27,6 @@
             "defaultValue": "app-total-cpu-time",
             "type": "String"
       },
-        "sites_contoso_payroll_app_externalid": {
-            "type": "String"
-      },
       "actionGroupName": {
         "type": "String",
         "metadata": {
@@ -157,7 +154,7 @@
           "severity": 3,
           "enabled": true,
           "scopes": [
-            "[parameters('sites_contoso_payroll_app_externalid')]"
+            "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
           ],
           "evaluationFrequency": "PT5M",
           "windowSize": "PT5M",
