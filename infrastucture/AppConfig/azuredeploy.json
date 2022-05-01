@@ -3,7 +3,6 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appName": {
-            "defaultValue": "contoso-payroll-app",
             "type": "String"
         },
         "location": {
@@ -61,7 +60,7 @@
                 "acrUseManagedIdentityCreds": false,
                 "logsDirectorySizeLimit": 35,
                 "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$contoso-payroll-app",
+                "publishingUsername": "$contoso-payroll-webapp",
                 "scmType": "None",
                 "use32BitWorkerProcess": true,
                 "webSocketsEnabled": false,
@@ -118,7 +117,7 @@
             "name": "[concat(parameters('appName'), '/', parameters('appName'), '.azurewebsites.net')]",
             "location": "[parameters('location')]",            
             "properties": {
-                "siteName": "contoso-payroll-app",
+                "siteName": "[parameters('appName')]",
                 "hostNameType": "Verified"
             }
         }
