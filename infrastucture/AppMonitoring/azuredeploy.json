@@ -15,6 +15,18 @@
         "metadata": {
           "description": "Name that will be used to build associated artifacts"
         }
+      },
+      "metricAlerts_app_total_cpu_time_name": {
+            "defaultValue": "app-total-cpu-time",
+            "type": "String"
+      },
+        "sites_contoso_payroll_app_externalid": {
+            "defaultValue": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/Microsoft.Web/sites/contoso-payroll-app",
+            "type": "String"
+      },
+        "actionGroups_email_notifications_externalid": {
+            "defaultValue": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/microsoft.insights/actionGroups/email-notifications",
+            "type": "String"
       }
     },
     "variables": {
@@ -103,6 +115,44 @@
             "legacy": 0,
             "enableLogAccessUsingOnlyResourcePermissions": true
           }
+        }
+      },
+      {
+        "type": "microsoft.insights/metricAlerts",
+        "apiVersion": "2018-03-01",
+        "name": "[parameters('metricAlerts_app_total_cpu_time_name')]",
+        "location": "global",
+        "properties": {
+          "description": "[parameters('metricAlerts_app_total_cpu_time_name')]",
+          "severity": 3,
+          "enabled": true,
+          "scopes": [
+            "[parameters('sites_contoso_payroll_app_externalid')]"
+          ],
+          "evaluationFrequency": "PT5M",
+          "windowSize": "PT5M",
+          "criteria": {
+            "allOf": [
+              {
+                "threshold": 5,
+                "name": "Metric1",
+                "metricNamespace": "Microsoft.Web/sites",
+                "metricName": "CpuTime",
+                "operator": "GreaterThan",
+                "timeAggregation": "Total",
+                "criterionType": "StaticThresholdCriterion"
+              }
+            ],
+            "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+          },
+          "autoMitigate": true,
+          "targetResourceType": "Microsoft.Web/sites",
+          "actions": [
+            {
+              "actionGroupId": "[parameters('actionGroups_email_notifications_externalid')]",
+              "webHookProperties": {}
+            }
+          ]
         }
       }
     ]

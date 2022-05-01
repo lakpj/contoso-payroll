@@ -7,6 +7,15 @@
       },
       "location": {
         "value": "westeurope"
+      },
+      "metricAlerts_app_total_cpu_time_name": {
+        "value": "app-total-cpu-time"        
+      },
+      "sites_contoso_payroll_app_externalid": {
+        "value": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/Microsoft.Web/sites/contoso-payroll-app"
+      },
+      "actionGroups_email_notifications_externalid": {
+        "value": "/subscriptions/f8a3cb61-333c-46f1-9878-21cbb10a8784/resourceGroups/contoso-payroll-rg/providers/microsoft.insights/actionGroups/email-notifications"
       }
     }
   }
