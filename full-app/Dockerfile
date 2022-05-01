@@ -2,6 +2,7 @@
 FROM openjdk AS build
 COPY . /app/
 WORKDIR /app/
+RUN chmod +x ./mvnw
 RUN ./mvnw clean verify
 
 # Building the image 
