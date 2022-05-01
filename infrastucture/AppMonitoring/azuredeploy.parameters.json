@@ -11,9 +11,6 @@
       "metricAlerts_app_total_cpu_time_name": {
         "value": "app-total-cpu-time"        
       },
-      "sites_contoso_payroll_app_externalid": {
-        "value": "/subscriptions/33a504d4-d730-43cf-8bf2-923c0686fcae/resourceGroups/contoso-payroll-rg/providers/Microsoft.Web/sites/contoso-payroll-app"
-      },
       "actionGroupName": {
           "value": "email-notifications"
       },
