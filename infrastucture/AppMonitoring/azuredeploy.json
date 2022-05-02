@@ -22,11 +22,7 @@
         "metadata": {
           "description": "Name that will be used to build associated artifacts"
         }
-      },
-      "metricAlerts_app_total_cpu_time_name": {
-            "defaultValue": "app-total-cpu-time",
-            "type": "String"
-      },
+      },      
       "actionGroupName": {
         "type": "String",
         "metadata": {

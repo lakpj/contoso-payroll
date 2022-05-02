@@ -4,13 +4,7 @@
     "parameters": {
       "appName": {
         "value": "contoso-webapp-x"
-      },
-      "location": {
-        "value": "westeurope"
-      },
-      "metricAlerts_app_total_cpu_time_name": {
-        "value": "app-total-cpu-time"        
-      },
+      },      
       "actionGroupName": {
           "value": "email-notifications"
       },

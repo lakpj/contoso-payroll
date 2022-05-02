@@ -29,22 +29,22 @@ pool:
   vmImage: windows-latest
 
 stages:
-# - stage: DeployAppServicePlan
-#   jobs:
-#    - job: DeployAppServicePlan 
-#      displayName: 'Deploy AppService Plan'
-#      steps:
-#      - task: AzureResourceGroupDeployment@2
-#        inputs:
-#          azureSubscription: $(SERVICE_CONNECTION)
-#          action: 'Create Or Update Resource Group'
-#          resourceGroupName: '$(RESOURCEGROUP_NAME)'
-#          location: $(LOCATION)
-#          deploymentMode: 'Incremental'
-#          templateLocation : 'URL of the file'
-#          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.json'
-#          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.parameters.json'
-#          deploymentName: 'DeployAppService'
+- stage: DeployAppServicePlan
+  jobs:
+   - job: DeployAppServicePlan 
+     displayName: 'Deploy AppService Plan'
+     steps:
+     - task: AzureResourceGroupDeployment@2
+       inputs:
+         azureSubscription: $(SERVICE_CONNECTION)
+         action: 'Create Or Update Resource Group'
+         resourceGroupName: '$(RESOURCEGROUP_NAME)'
+         location: $(LOCATION)
+         deploymentMode: 'Incremental'
+         templateLocation : 'URL of the file'
+         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.json'
+         csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.parameters.json'
+         deploymentName: 'DeployAppService'
 - stage: DeployWebappToServicePlan 
   # dependsOn:
   # - DeployAppServicePlan
