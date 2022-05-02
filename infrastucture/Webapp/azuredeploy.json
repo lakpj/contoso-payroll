@@ -21,7 +21,10 @@
         "imageTag": {
             "type": "string"
         },
-        "dockerRepositoryName": {
+        "dockerUserId": {
+            "type": "string"
+        },
+        "dockerImage": {
             "type": "string"
         },
         "dockerRegistryUsername": {
@@ -33,7 +36,7 @@
     },
     "variables": {
         "serverfarm_id": "[resourceId('Microsoft.Web/serverFarms/', parameters('serverFarmsPlanName'))]",
-        "linuxFxVersion": "[concat('DOCKER|', toLower(parameters('dockerRepositoryName')), ':', parameters('imageTag'))]",
+        "linuxFxVersion": "[concat('DOCKER|', toLower(parameters('dockerUserId')), '/', toLower(parameters('dockerImage')), ':', parameters('imageTag'))]",
         "publishingUserName": "[concat('$', toLower(parameters('appName')))]"
 
     },
@@ -63,6 +66,24 @@
                 "isXenon": false,
                 "hyperV": false,
                 "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_URL",
+                            "value": "[parameters('dockerRegistryUrl')]"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                            "value": "[parameters('dockerRegistryUsername')]"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+                            "value": "[parameters('dockerRegistryPassword')]"
+                        },
+                        {
+                            "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                            "value": "false"
+                        }
+                    ],
                     "numberOfWorkers": 1,
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
                     "acrUseManagedIdentityCreds": false,
@@ -89,7 +110,7 @@
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/ftp')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
             ],
@@ -101,7 +122,7 @@
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/scm')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
             ],
@@ -113,7 +134,7 @@
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/web')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
             ],
@@ -194,7 +215,7 @@
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('appName'), '/', parameters('appName'), '.azurewebsites.net')]",
-            "location": "West Europe",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('appName'))]"
             ],

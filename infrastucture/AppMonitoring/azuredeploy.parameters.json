@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "appName": {
-        "value": "contoso-payroll-webapp"
+        "value": "contoso-webapp-x"
       },
       "location": {
         "value": "westeurope"

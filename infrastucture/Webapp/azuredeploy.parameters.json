@@ -9,16 +9,19 @@
             "value": "contoso-webapp-x" 
         },
         "dockerRegistryUrl": {
-            "value": "{docker-id}/{image-name}"
+            "value": "https://index.docker.io"
         },
         "dockerRegistryUsername": {
-            "value": "docker.user"
+            "value": ""
         },        
         "dockerRegistryPassword": {
-            "value": "{docker-password}"
+            "value": ""
         },
-        "dockerRepositoryName": {
-            "value": "lakpriyagk/contoso-payroll-app"
+        "dockerUserId":{
+            "value": "lakpriyagk"
+        },
+        "dockerImage": {
+            "value": "contoso-payroll-app"
         },
         "imageTag": {           
             "value": "106"            
