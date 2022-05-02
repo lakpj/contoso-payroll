@@ -148,9 +148,9 @@
       "dependsOn": [
         "[resourceId('Microsoft.Web/sites/', parameters('appName'))]"
       ],
-      // "tags": {
-      //   "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('appName'))]": "Resource"
-      // },
+      "tags": {
+          "ProjectName": "[parameters('appName')]"
+      },
       "properties": {
         "severity": 1,
         "enabled": true,
@@ -190,58 +190,15 @@
           }
         ]
       }
-    },
-    { 
-      "name": "[concat('The average CPU is high across all the instances of ', variables('appServicePlanName'))]",
-      "type": "Microsoft.Insights/metricAlerts",
-      "apiVersion": "2018-03-01",
-      "location": "global",
-      // "tags": {
-      //   "[concat('hidden-link:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', variables('appServicePlanName'))]": "Resource"
-      // },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', variables('appServicePlanName'))]"
-      ],
-      "properties": {
-        "severity": 1,
-        "enabled": true,
-        "scopes": [
-          "[resourceId('Microsoft.Web/serverfarms/', variables('appServicePlanName'))]"
-        ],
-        "targetResourceType" : "Microsoft.Web/serverfarms",
-        "targetResourceRegion": "[parameters('location')]",
-        "evaluationFrequency": "PT1M",
-        "windowSize": "PT5M",
-        "criteria": {
-          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
-          "allOf": [
-            {
-              "name": "[concat('Microsoft.Web/serverfarms/', variables('appServicePlanName'), '-cpupercentage')]",
-              "metricName": "CpuPercentage",
-              "operator": "GreaterThan",
-              "threshold": 90,
-              "timeAggregation": "Average",
-              "criterionType": "StaticThresholdCriterion"
-            }
-          ],
-          "componentId": "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-          "metricName": "[concat('The average CPU is high across all the instances of ', variables('appServicePlanName'))]"
-          },
-            "actions": [
-          {
-            "actionGroupId": "[resourceId('microsoft.insights/actionGroups',parameters('actionGroupName'))]"
-          }
-        ]
-      }
-    },
+    },    
     {
       "name": "[concat('LongHttpQueue ', variables('appServicePlanName'))]",
       "type": "Microsoft.Insights/metricAlerts",
       "apiVersion": "2018-03-01",
       "location": "global",
-      // "tags": {
-      //   "[concat('hidden-link:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', variables('appServicePlanName'))]": "Resource"
-      // },
+      "tags": {
+          "ProjectName": "[parameters('serverFarmsPlanName')]"
+      },
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms/', variables('appServicePlanName'))]"
       ],
@@ -277,14 +234,14 @@
         ]
       }
     },    
-      { 
+    { 
         "name": "[concat('The average CPU is high across all the instances of ', variables('appServicePlanName'))]",
         "type": "Microsoft.Insights/metricAlerts",
         "apiVersion": "2018-03-01",
         "location": "global",
-        // "tags": {
-        //   "[concat('hidden-link:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', variables('appServicePlanName'))]": "Resource"
-        // },
+        "tags": {
+          "ProjectName": "[parameters('serverFarmsPlanName')]"
+        },
         "dependsOn": [
           "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
           "[resourceId('microsoft.insights/actionGroups',parameters('actionGroupName'))]"
