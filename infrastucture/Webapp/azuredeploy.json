@@ -38,7 +38,7 @@
         "serverfarm_id": "[resourceId('Microsoft.Web/serverFarms/', parameters('serverFarmsPlanName'))]",
         "linuxFxVersion": "[concat('DOCKER|', toLower(parameters('dockerUserId')), '/', toLower(parameters('dockerImage')), ':', parameters('imageTag'))]",
         "publishingUserName": "[concat('$', toLower(parameters('appName')))]",
-        "appInsightName": "[toLower(format('appi-{0}', parameters('appName')))]",
+        "appInsightName": "[parameters('appName')]",
         "logAnalyticsName": "[toLower(format('la-{0}', parameters('appName')))]"
     },
     "resources": [        

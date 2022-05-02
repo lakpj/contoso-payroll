@@ -43,7 +43,7 @@
       }
     },
     "variables": {     
-      "appInsightName": "[toLower(format('appi-{0}', parameters('appName')))]",
+      "appInsightName": "[parameters('appName')]",
       "appServicePlanName": "[parameters('serverFarmsPlanName')]"
     },
     "resources": [            
