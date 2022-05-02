@@ -44,7 +44,7 @@ stages:
          templateLocation : 'URL of the file'
          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.json'
          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.parameters.json'
-         deploymentName: 'DeployAppService'
+         deploymentName: 'DeployAppServicePlan'
 - stage: DeployWebappToServicePlan 
   dependsOn:
   - DeployAppServicePlan
