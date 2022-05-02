@@ -54,6 +54,9 @@
             },
             "properties": {
                 "Application_Type": "web",
+                "IngestionMode": "LogAnalytics",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled",
                 "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsName'))]"
             },
             "dependsOn": [
@@ -125,7 +128,11 @@
                         {
                             "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
                             "value": "false"
-                        }
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(concat('microsoft.insights/components/', variables('appInsightName'))).InstrumentationKey]"
+                        }                        
                     ],
                     "numberOfWorkers": 1,
                     "linuxFxVersion": "[variables('linuxFxVersion')]",
