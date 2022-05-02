@@ -22,9 +22,6 @@
         },
         "databaseForMySqlVersion": {
             "value": "5.7"
-        },
-        "databaseForMySqlSizeGb": {
-            "value": 5
         }
     }
 }
