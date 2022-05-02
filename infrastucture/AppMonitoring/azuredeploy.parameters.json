@@ -3,14 +3,8 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "appName": {
-        "value": "contoso-payroll-webapp"
-      },
-      "location": {
-        "value": "westeurope"
-      },
-      "metricAlerts_app_total_cpu_time_name": {
-        "value": "app-total-cpu-time"        
-      },
+        "value": "contoso-webapp-x"
+      },      
       "actionGroupName": {
           "value": "email-notifications"
       },

@@ -139,7 +139,8 @@
             "environment": "[parameters('environment')]"
         },
         "settingName": "[concat(toLower(parameters('serverFarmsPlanName')), '-setting')]",
-        "targetResourceId": "[resourceId('Microsoft.Web/serverFarms/', parameters('serverFarmsPlanName'))]"        
+        "targetResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('serverFarmsPlanName'))]"        
+
     },
     "functions": [],
     "resources": [        
@@ -191,7 +192,7 @@
                 {
                     "metricTrigger": {
                     "metricName": "[parameters('autoscaleMetricName')]",
-                    "metricResourceUri": "[variables('targetResourceId')]",
+                    "metricResourceUri": "[variables('targetResourceUri')]",
                     "timeGrain": "PT5M",
                     "statistic": "Average",
                     "timeWindow": "PT10M",
@@ -209,7 +210,7 @@
                 {
                     "metricTrigger": {
                     "metricName": "[parameters('autoscaleMetricName')]",
-                    "metricResourceUri": "[variables('targetResourceId')]",
+                    "metricResourceUri": "[variables('targetResourceUri')]",
                     "timeGrain": "PT5M",
                     "statistic": "Average",
                     "timeWindow": "PT10M",
@@ -228,7 +229,7 @@
             }
         ],
         "enabled": "[parameters('autoscaleEnabled')]",
-        "targetResourceUri": "[variables('targetResourceId')]"
+        "targetResourceUri": "[variables('targetResourceUri')]"
         }
     }
     ],

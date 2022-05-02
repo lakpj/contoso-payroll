@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverFarmsPlanName": {
+            "value": "payroll-app-serv-plan" 
+        },
+        "appName": {
+            "value": "contoso-webapp-x" 
+        },
+        "dockerRegistryUrl": {
+            "value": "https://index.docker.io"
+        },
+        "dockerRegistryUsername": {
+            "value": ""
+        },        
+        "dockerRegistryPassword": {
+            "value": ""
+        },
+        "dockerUserId":{
+            "value": "lakpriyagk"
+        },
+        "dockerImage": {
+            "value": "contoso-payroll-app"
+        },
+        "imageTag": {           
+            "value": "106"            
+        }
+    }
+}
