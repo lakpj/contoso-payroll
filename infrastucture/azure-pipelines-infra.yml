@@ -7,13 +7,14 @@ parameters:
 - name: ResourceGroupName
   displayName: Resource Group Name
   type: string
+- name: Region
+  displayName: Azure region
+  type: string
 
 variables:
   SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection-1
   RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
-  LOCATION: 'westeurope'
-  APP_SERV_PLAN: 'payroll-app-serv-plan'
-  APP_NAME: 'contoso-payroll-webapp'
+  LOCATION: '${{ parameters.Region }}'
 
 trigger:
   branches:
@@ -44,21 +45,6 @@ stages:
 #          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
 #          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.parameters.json'
 #          deploymentName: 'DeployAppService'
-# - stage: DeployLogAnalyticsWorkspace 
-#   jobs: 
-#   - job: DeployLogAnalyticsWorkspace 
-#     displayName: 'Deploy LogAnalytics Workspace'
-#     steps:
-#     - task: AzureResourceGroupDeployment@2
-#       inputs:
-#         azureSubscription: $(SERVICE_CONNECTION)
-#         action: 'Create Or Update Resource Group'
-#         resourceGroupName: '$(RESOURCEGROUP_NAME)'
-#         location: $(LOCATION)
-#         deploymentMode: 'Incremental'
-#         templateLocation : 'URL of the file'
-#         csmFileLink: 'https://github.com/lakpj/contoso-payroll/blob/infra-pipeline/infrastucture/LogAnalyticsWorkspace/azuredeploy.json'
-#         deploymentName: 'DeployLogAnalytics'
 - stage: DeployWebappToServicePlan 
   # dependsOn:
   # - DeployAppServicePlan
@@ -66,20 +52,6 @@ stages:
   jobs:  
   - job: DeployWebapp 
     displayName: 'Deploy Webapp To Application Service Plan'
-    steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(SERVICE_CONNECTION)
-        scriptType: ps
-        scriptLocation: inlineScript
-        workingDirectory: $(Build.SourcesDirectory)/infrastucture
-        inlineScript: |
-          az webapp create --resource-group $(RESOURCEGROUP_NAME) --plan $(APP_SERV_PLAN) --name $(APP_NAME) --multicontainer-config-type compose --multicontainer-config-file docker-compose-payroll.yml
-  - job: ConfigWebappInServicePlan
-    dependsOn:
-    - DeployWebapp
-    condition: succeeded('DeployWebapp') 
-    displayName: 'Config Webapp In Service Plan'
     steps:    
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
@@ -89,10 +61,10 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppConfig/azuredeploy.json'
-        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppConfig/azuredeploy.parameters.json'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/Webapp/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/Webapp/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
-        deploymentName: 'ConfigWebapp'
+        deploymentName: 'DeployWebapp'  
 - stage: EnableMonitoringToWebapp 
   dependsOn:
   - DeployWebappToServicePlan
