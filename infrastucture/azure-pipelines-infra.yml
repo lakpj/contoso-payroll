@@ -12,9 +12,11 @@ parameters:
   type: string
 
 variables:
-  SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection
-  RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
-  LOCATION: '${{ parameters.Region }}'
+- group: ContosoPayroll
+- name: RESOURCEGROUP_NAME
+  value: '${{ parameters.ResourceGroupName }}'
+- name: LOCATION
+  value: '${{ parameters.Region }}'
 
 trigger:
   branches:
@@ -36,7 +38,7 @@ stages:
 #      steps:
 #      - task: AzureResourceGroupDeployment@2
 #        inputs:
-#          azureSubscription: $(SERVICE_CONNECTION)
+#          azureSubscription: $(ARM_SERVICE_CONNECTION)
 #          action: 'Create Or Update Resource Group'
 #          resourceGroupName: '$(RESOURCEGROUP_NAME)'
 #          location: $(LOCATION)
@@ -55,7 +57,7 @@ stages:
     steps:    
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        azureResourceManagerConnection: $(SERVICE_CONNECTION)
+        azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(RESOURCEGROUP_NAME)'
         location: $(LOCATION)
@@ -75,7 +77,7 @@ stages:
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        azureResourceManagerConnection: $(SERVICE_CONNECTION)
+        azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(RESOURCEGROUP_NAME)'
         location: $(LOCATION)

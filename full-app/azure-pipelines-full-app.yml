@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
+- group: ContosoPayroll
 
 trigger:
   branches:
@@ -50,7 +50,7 @@ stages:
         displayName: Build and Push 
         inputs:
           command: buildAndPush
-          containerRegistry: $(SERVICE_CONNECTION)
+          containerRegistry: $(DOCKER_SERVICE_CONNECTION)
           Dockerfile: full-app/Dockerfile
           repository: 'lakpriyagk/contoso-payroll-app'
           tags: '$(Build.BuildId)'
