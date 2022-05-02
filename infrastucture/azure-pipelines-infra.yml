@@ -31,23 +31,23 @@ pool:
   vmImage: windows-latest
 
 stages:
-# - stage: DeployAppServicePlan
-#   jobs:
-#    - job: DeployAppServicePlan 
-#      displayName: 'Deploy AppService Plan'
-#      steps:
-#      - task: AzureResourceGroupDeployment@2
-#        inputs:
-#          azureSubscription: $(ARM_SERVICE_CONNECTION)
-#          action: 'Create Or Update Resource Group'
-#          resourceGroupName: '$(RESOURCEGROUP_NAME)'
-#          location: $(LOCATION)
-#          deploymentMode: 'Incremental'
-#          templateLocation : 'URL of the file'
-#          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.json'
-#          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.parameters.json'
-#          deploymentName: 'DeployAppServicePlan'
-- stage: DeployDatabase 
+- stage: DeployAppServicePlan
+  jobs:
+   - job: DeployAppServicePlan 
+     displayName: 'Deploy AppService Plan'
+     steps:
+     - task: AzureResourceGroupDeployment@2
+       inputs:
+         azureSubscription: $(ARM_SERVICE_CONNECTION)
+         action: 'Create Or Update Resource Group'
+         resourceGroupName: '$(RESOURCEGROUP_NAME)'
+         location: $(LOCATION)
+         deploymentMode: 'Incremental'
+         templateLocation : 'URL of the file'
+         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/AppServicePlan/azuredeploy.json'
+         csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/AppServicePlan/azuredeploy.parameters.json'
+         deploymentName: 'DeployAppServicePlan'
+- stage: DeployMySqlDatabase 
   jobs:  
   - job: DeployDatabase 
     displayName: 'Deploy MySql database'
@@ -60,47 +60,47 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/MySqldb/azuredeploy.json'
-        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/MySqldb/azuredeploy.parameters.json'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/MySqldb/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/MySqldb/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployDatabase'
-# - stage: DeployWebappToServicePlan 
-#   dependsOn:
-#   - DeployAppServicePlan
-#   condition: succeeded('DeployAppServicePlan')
-#   jobs:  
-#   - job: DeployWebapp 
-#     displayName: 'Deploy Webapp To Application Service Plan'
-#     steps:    
-#     - task: AzureResourceManagerTemplateDeployment@3
-#       inputs:
-#         azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
-#         action: 'Create Or Update Resource Group'
-#         resourceGroupName: '$(RESOURCEGROUP_NAME)'
-#         location: $(LOCATION)
-#         deploymentMode: 'Incremental'
-#         templateLocation : 'URL of the file'
-#         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/Webapp/azuredeploy.json'
-#         csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/Webapp/azuredeploy.parameters.json'
-#         deploymentScope: 'Resource Group'    
-#         deploymentName: 'DeployWebapp'  
-# - stage: EnableMonitoringToWebapp 
-#   dependsOn:
-#   - DeployWebappToServicePlan
-#   condition: succeeded('DeployWebappToServicePlan')
-#   jobs:
-#   - job: EnableMonitoring 
-#     displayName: 'Enable Monitoring To Webapp'
-#     steps:
-#     - task: AzureResourceManagerTemplateDeployment@3
-#       inputs:
-#         azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
-#         action: 'Create Or Update Resource Group'
-#         resourceGroupName: '$(RESOURCEGROUP_NAME)'
-#         location: $(LOCATION)
-#         deploymentMode: 'Incremental'
-#         templateLocation : 'URL of the file'
-#         csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppMonitoring/azuredeploy.json'
-#         csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppMonitoring/azuredeploy.parameters.json'
-#         deploymentScope: 'Resource Group'    
-#         deploymentName: 'DeployMonitoring'
+- stage: DeployWebappToServicePlan 
+  dependsOn:
+  - DeployMySqlDatabase
+  condition: succeeded('DeployMySqlDatabase')
+  jobs:  
+  - job: DeployWebapp 
+    displayName: 'Deploy Webapp To Application Service Plan'
+    steps:    
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(RESOURCEGROUP_NAME)'
+        location: $(LOCATION)
+        deploymentMode: 'Incremental'
+        templateLocation : 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/Webapp/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/Webapp/azuredeploy.parameters.json'
+        deploymentScope: 'Resource Group'    
+        deploymentName: 'DeployWebapp'  
+- stage: EnableMonitoringToWebapp 
+  dependsOn:
+  - DeployWebappToServicePlan
+  condition: succeeded('DeployWebappToServicePlan')
+  jobs:
+  - job: EnableMonitoring 
+    displayName: 'Enable Monitoring To Webapp'
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(RESOURCEGROUP_NAME)'
+        location: $(LOCATION)
+        deploymentMode: 'Incremental'
+        templateLocation : 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/AppMonitoring/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/main/infrastucture/AppMonitoring/azuredeploy.parameters.json'
+        deploymentScope: 'Resource Group'    
+        deploymentName: 'DeployMonitoring'
