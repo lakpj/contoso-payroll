@@ -42,8 +42,8 @@ stages:
 #          location: $(LOCATION)
 #          deploymentMode: 'Incremental'
 #          templateLocation : 'URL of the file'
-#          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.json'
-#          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppServicePlan/azuredeploy.parameters.json'
+#          csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.json'
+#          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.parameters.json'
 #          deploymentName: 'DeployAppService'
 - stage: DeployWebappToServicePlan 
   # dependsOn:
@@ -61,8 +61,8 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/Webapp/azuredeploy.json'
-        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/Webapp/azuredeploy.parameters.json'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/Webapp/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/Webapp/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployWebapp'  
 - stage: EnableMonitoringToWebapp 
@@ -81,7 +81,7 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppMonitoring/azuredeploy.json'
-        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/infra-pipeline/infrastucture/AppMonitoring/azuredeploy.parameters.json'
+        csmFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppMonitoring/azuredeploy.json'
+        csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppMonitoring/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployMonitoring'
