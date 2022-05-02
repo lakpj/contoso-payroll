@@ -2,93 +2,150 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters":{
-        "databaseForMySqlAdminName": {
-            "type": "string"
-        },
-        "databaseForMySqlAdminPassword": {
-            "type": "securestring"
-        },
-        "databaseForMySqlDatabaseName": {
+        "serverName": {
             "type": "string",
-            "defaultValue": "sampledb"
+            "metadata": {
+                "description": "Server Name for Azure database for MySQL"
+            }
         },
-        "databaseForMySqlTier": {
+        "administratorLogin": {
             "type": "string",
-            "defaultValue": "Basic",
+            "minLength": 1,
+            "metadata": {
+                "description": "Database administrator login name"
+            }
+        },
+        "administratorLoginPassword": {
+            "type": "secureString",
+            "minLength": 8,
+            "metadata": {
+                "description": "Database administrator password"
+            }
+        },
+        "skuCapacity": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Azure database for MySQL compute capacity in vCores (2,4,8,16,32)"
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "GP_Gen5_2",
+            "metadata": {
+                "description": "Azure database for MySQL sku name "
+            }
+        },
+        "SkuSizeMB": {
+            "type": "int",
+            "defaultValue": 5120,
+            "metadata": {
+                "description": "Azure database for MySQL Sku Size "
+            }
+        },
+        "SkuTier": {
+            "type": "string",
+            "defaultValue": "GeneralPurpose",
             "allowedValues": [
                 "Basic",
                 "GeneralPurpose",
                 "MemoryOptimized"
-            ]
+            ],
+            "metadata": {
+                "description": "Azure database for MySQL pricing tier"
+            }
         },
-        "databaseForMySqlFamily": {
+        "skuFamily": {
             "type": "string",
-            "defaultValue": "Gen4",
-            "allowedValues": [
-                "Gen4",
-                "Gen5"
-            ]
+            "defaultValue": "Gen5",
+            "metadata": {
+                "description": "Azure database for MySQL sku family"
+            }
         },
-        "databaseForMySqlCores": {
-            "type": "int",
-            "defaultValue": 1,
-            "allowedValues": [
-                1,
-                2,
-                4,
-                8,
-                16,
-                32
-            ]
-        },
-        "databaseForMySqlVersion": {
+        "mysqlVersion": {
             "type": "string",
-            "defaultValue": "5.7",
+            "defaultValue": "8.0",
             "allowedValues": [
+                "5.6",
                 "5.7",
-                "5.6"
-            ]
+                "8.0"
+            ],
+            "metadata": {
+                "description": "MySQL version"
+            }
+        },
+        "backupRetentionDays": {
+            "type": "int",
+            "defaultValue": 7,
+            "metadata": {
+                "description": "MySQL Server backup retention days"
+            }
+        },
+        "geoRedundantBackup": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "metadata": {
+                "description": "Geo-Redundant Backup setting"
+            }
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "databaseForMySqlName": "[concat(resourceGroup().name, 'mysql')]",
-        "databaseForMySqlSku": "[concat(variables('tierSymbol')[parameters('databaseForMySqlTier')], '_', parameters('databaseForMySqlFamily'), '_', parameters('databaseForMySqlCores'))]",
-        "tierSymbol": {
-            "Basic": "B",
-            "GeneralPurpose": "GP",
-            "MemoryOptimized": "MO"
+        "firewallrules": [
+        {
+            "Name": "rule1",
+            "StartIpAddress": "0.0.0.0",
+            "EndIpAddress": "255.255.255.255"
+        },
+        {
+            "Name": "rule2",
+            "StartIpAddress": "0.0.0.0",
+            "EndIpAddress": "255.255.255.255"
         }
+        ]
     },
     "resources": [
         {
-            "name": "[variables('databaseForMySqlName')]",
             "type": "Microsoft.DBforMySQL/servers",
             "apiVersion": "2017-12-01",
+            "name": "[parameters('serverName')]",
             "location": "[variables('location')]",
             "sku": {
-                "name": "[variables('databaseForMySqlSku')]"
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('SkuTier')]",
+                "capacity": "[parameters('skuCapacity')]",
+                "size": "[format('{0}', parameters('SkuSizeMB'))]",
+                "family": "[parameters('skuFamily')]"
             },
             "properties": {
-                "version": "[parameters('databaseForMySqlVersion')]",
-                "administratorLogin": "[parameters('databaseForMySqlAdminName')]",
-                "administratorLoginPassword": "[parameters('databaseForMySqlAdminPassword')]",
-                "createMode": "default"
-            },
-            "resources": [
-                {
-                    "name": "[parameters('databaseForMySqlDatabaseName')]",
-                    "type": "databases",
-                    "apiVersion": "2021-05-01",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.DBforMySQL/servers', variables('databaseForMySqlName'))]"
-                    ],
-                    "properties": {
-                        "charset": "utf8",
-                        "collation": "utf8_general_ci"
-                    }
+                "createMode": "Default",
+                "version": "[parameters('mysqlVersion')]",
+                "administratorLogin": "[parameters('administratorLogin')]",
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "storageProfile": {
+                "storageMB": "[parameters('SkuSizeMB')]",
+                "backupRetentionDays": "[parameters('backupRetentionDays')]",
+                "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
                 }
-            ]
-        }
+            }
+        },
+    {
+      "copy": {
+        "name": "firewallRules",
+        "count": "[length(variables('firewallrules'))]",
+        "mode": "serial",
+        "batchSize": 1
+      },
+      "type": "Microsoft.DBforMySQL/servers/firewallRules",
+      "apiVersion": "2017-12-01",
+      "name": "[format('{0}/{1}', parameters('serverName'), variables('firewallrules')[copyIndex()].Name)]",
+      "properties": {
+        "startIpAddress": "[variables('firewallrules')[copyIndex()].StartIpAddress]",
+        "endIpAddress": "[variables('firewallrules')[copyIndex()].EndIpAddress]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
+      ]
+    }
     ]
 }

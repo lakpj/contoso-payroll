@@ -2,26 +2,29 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters":{
-        "databaseForMySqlAdminName": {
+        "serverName": {
+            "value": "contosodbserver"
+        },
+        "administratorLogin": {
             "value": "sqladmin"
         },
-        "databaseForMySqlAdminPassword": {
+        "administratorLoginPassword": {
             "value": "Password1234!"
         },
-        "databaseForMySqlDatabaseName": {
-            "value": "contosodb"
+        "mysqlVersion": {
+            "value": "8.0"
         },
-        "databaseForMySqlTier": {
-            "value": "GeneralPurpose"
+        "backupRetentionDays": {
+            "value": 7
         },
-        "databaseForMySqlFamily": {
-            "value": "Gen4"
+        "geoRedundantBackup": {
+            "value": "Disabled"
         },
-        "databaseForMySqlCores": {
+        "skuCapacity": {
             "value": 2
         },
-        "databaseForMySqlVersion": {
-            "value": "5.7"
+        "SkuSizeMB": {
+            "value": 5120
         }
     }
 }
