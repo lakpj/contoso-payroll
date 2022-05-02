@@ -12,7 +12,7 @@ parameters:
   type: string
 
 variables:
-  SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection-1
+  SERVICE_CONNECTION: lakpriyagk-arm-subscription-service-connection
   RESOURCEGROUP_NAME: '${{ parameters.ResourceGroupName }}'
   LOCATION: '${{ parameters.Region }}'
 
@@ -46,9 +46,9 @@ stages:
          csmParametersFileLink: 'https://raw.githubusercontent.com/lakpj/contoso-payroll/deploy-webapp/infrastucture/AppServicePlan/azuredeploy.parameters.json'
          deploymentName: 'DeployAppService'
 - stage: DeployWebappToServicePlan 
-  # dependsOn:
-  # - DeployAppServicePlan
-  # condition: succeeded('DeployAppServicePlan')
+  dependsOn:
+  - DeployAppServicePlan
+  condition: succeeded('DeployAppServicePlan')
   jobs:  
   - job: DeployWebapp 
     displayName: 'Deploy Webapp To Application Service Plan'
