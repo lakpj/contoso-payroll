@@ -144,10 +144,7 @@
       "name": "[concat('ServerErrors ', parameters('appName'))]",
       "type": "Microsoft.Insights/metricAlerts",
       "apiVersion": "2018-03-01",
-      "location": "global",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/', parameters('appName'))]"
-      ],
+      "location": "global",      
       "tags": {
           "ProjectName": "[parameters('appName')]"
       },
@@ -198,10 +195,7 @@
       "location": "global",
       "tags": {
           "ProjectName": "[parameters('serverFarmsPlanName')]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms/', variables('appServicePlanName'))]"
-      ],
+      },      
       "properties": {
         "severity": 1,
         "enabled": true,
