@@ -12,8 +12,8 @@
 	</parent>
 
 	<groupId>com.contoso</groupId>
-	<artifactId>react-and-spring-data-rest</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>contoso-payroll</artifactId>
+	<version>1.0</version>
 
 	<name>React.js and Spring Data REST</name>
 	<description>An SPA with ReactJS in the frontend and Spring Data REST in the backend</description>

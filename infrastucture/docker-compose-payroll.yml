@@ -9,5 +9,7 @@ services:
   frontend:
     image: "lakpriyagk/contoso-payroll-frontend:56"
     container_name: "frontend"
+    ports:
+      - "80:80"
     depends_on:
       - backend
