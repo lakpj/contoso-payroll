@@ -1,5 +1,9 @@
 package com.contoso.payroll;
 
+import com.contoso.payroll.Employee;
+import com.contoso.payroll.Manager;
+import com.contoso.payroll.ManagerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;

@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-- group: ContosoPayroll
+  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
 
 trigger:
   branches:
@@ -37,20 +37,20 @@ stages:
           goals: 'package'
 
 # pipeline stage to build and push the backend container to a docker registry, authenticated through service connection 
-- stage: PushAppContainerImage
-  dependsOn:
-  - BuildPayrollApp
-  condition: succeeded('BuildPayrollApp')
-  jobs:
-  - job: PushAppImage
-    displayName: Build and Push container image to docker hub
+# - stage: PushAppContainerImage
+#   dependsOn:
+#   - BuildPayrollApp
+#   condition: succeeded('BuildPayrollApp')
+#   jobs:
+#   - job: PushAppImage
+#     displayName: Build and Push container image to docker hub
 
-    steps:
-      - task: Docker@2
-        displayName: Build and Push 
-        inputs:
-          command: buildAndPush
-          containerRegistry: $(DOCKER_SERVICE_CONNECTION)
-          Dockerfile: full-app/Dockerfile
-          repository: 'lakpriyagk/contoso-payroll-app'
-          tags: '$(Build.BuildId)'
+#     steps:
+#       - task: Docker@2
+#         displayName: Build and Push 
+#         inputs:
+#           command: buildAndPush
+#           containerRegistry: 'lakpriyagk-docker-hub-service-connection'
+#           Dockerfile: full-app/Dockerfile
+#           repository: 'lakpriyagk/contoso-payroll-app'
+#           tags: '$(Build.BuildId)'
