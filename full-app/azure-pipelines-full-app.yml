@@ -52,5 +52,5 @@ stages:
 #           command: buildAndPush
 #           containerRegistry: 'lakpriyagk-docker-hub-service-connection'
 #           Dockerfile: full-app/Dockerfile
-#           repository: 'lakpriyagk/contoso-payroll-app'
+#           repository: $(DOCKER_REGISTORY)
 #           tags: '$(Build.BuildId)'
