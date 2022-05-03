@@ -1,5 +1,8 @@
 package com.contoso.payroll;
 
+import com.contoso.payroll.Manager;
+import com.contoso.payroll.ManagerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
