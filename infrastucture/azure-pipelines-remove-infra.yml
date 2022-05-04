@@ -15,8 +15,6 @@ variables:
 - group: ContosoPayroll
 - name: RESOURCEGROUP_NAME
   value: '${{ parameters.ResourceGroupName }}'
-- name: LOCATION
-  value: '${{ parameters.Region }}'
 
 pool:
   vmImage: ubuntu-latest
