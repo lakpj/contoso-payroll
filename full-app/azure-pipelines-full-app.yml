@@ -80,4 +80,4 @@ stages:
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: |
-            az group delete --name $(TEMP_RG) --force-deletion-types --no-wait --yes
+            az group delete --name $(TEMP_RG) --no-wait --yes
