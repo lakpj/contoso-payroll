@@ -4,7 +4,9 @@
 # https://aka.ms/yaml
 
 variables:
-  SERVICE_CONNECTION: lakpriyagk-docker-hub-service-connection
+- group: ContosoPayroll
+- name: TEMP_RG
+  value: tem-rg
 
 trigger:
   branches:
@@ -20,37 +22,62 @@ pool:
 
 stages:
 # pipeline stage to compile backend code 
-- stage: BuildPayrollApp
+- stage: BuildandPushPayrollApp
   jobs:
-  - job: BuildPayrollApp
-    displayName: Build Payroll with Maven
+  - job: BuildandTest
+    displayName: Build and Test with Maven
     steps:
-      - task: Maven@3
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: Create Temp DB Server for Maven
         inputs:
-          mavenPomFile: 'full-app/pom.xml'
-          mavenOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'package'
-
-# pipeline stage to build and push the backend container to a docker registry, authenticated through service connection 
-# - stage: PushAppContainerImage
-#   dependsOn:
-#   - BuildPayrollApp
-#   condition: succeeded('BuildPayrollApp')
-#   jobs:
-#   - job: PushAppImage
-#     displayName: Build and Push container image to docker hub
-
-#     steps:
-#       - task: Docker@2
-#         displayName: Build and Push 
-#         inputs:
-#           command: buildAndPush
-#           containerRegistry: 'lakpriyagk-docker-hub-service-connection'
-#           Dockerfile: full-app/Dockerfile
-#           repository: $(DOCKER_REGISTORY)
-#           tags: '$(Build.BuildId)'
+          azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
+          action: 'Create Or Update Resource Group'
+          resourceGroupName: $(TEMP_RG)
+          location: westeurope
+          deploymentMode: 'Incremental'
+          templateLocation : 'URL of the file'
+          csmFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.json'
+          csmParametersFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.parameters-temp.json'
+          deploymentScope: 'Resource Group'    
+          deploymentName: 'DeployTempDatabaseServer'
+          workingDirectory: '$(Build.SourcesDirectory)/full-app'
+      - task: AzureMysqlDeployment@1
+        displayName: Create Temp DB in the Server
+        inputs:
+          azureSubscription: $(ARM_SERVICE_CONNECTION)
+          ServerName: 'contoso-pay-db-server-temp.mysql.database.azure.com'
+          SqlUsername: $(MYSQL_USER_NAME)
+          SqlPassword: $(MYSQL_PWD)
+          TaskNameSelector: 'InlineSqlTask'
+          SqlInline: |
+            DROP DATABASE IF EXISTS contosodb;
+            CREATE DATABASE contosodb;
+            USE contosodb;
+      - task: CmdLine@2
+        displayName: Build and Test Maven
+        inputs:
+          script: |
+            chmod +x ./mvnw && ./mvnw clean verify
+          workingDirectory: '$(Build.SourcesDirectory)/full-app'
+      - task: PublishTestResults@2
+        displayName: Publish Test Results
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: './TEST-*.xml' 
+          searchFolder: '$(Build.SourcesDirectory)/full-app/targets/surefire-reports'
+      - task: Docker@2
+        displayName: Build and Push Docker Image
+        inputs:
+          command: buildAndPush
+          containerRegistry: $(DOCKER_SERVICE_CONNECTION)
+          Dockerfile: full-app/Dockerfile
+          repository: $(DOCKER_REGISTORY)
+          tags: '$(Build.BuildId)'
+      - task: AzureCLI@2
+        displayName: Azure CLI RemoveResourceGroup
+        inputs:
+          azureSubscription: $(ARM_SERVICE_CONNECTION)
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az group delete --name $(TEMP_RG) --no-wait --yes

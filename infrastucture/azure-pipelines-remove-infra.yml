@@ -1,0 +1,35 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+parameters:
+- name: ResourceGroupName
+  displayName: Resource Group Name
+  type: string
+
+variables:
+- group: ContosoPayroll
+- name: RESOURCEGROUP_NAME
+  value: '${{ parameters.ResourceGroupName }}'
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+# pipeline stage to compile backend code 
+- stage: RemoveResourceGroup
+  jobs:
+  - job: RemoveResourceGroup
+    displayName: Cleanup Infrastructure 
+    steps:
+      - task: AzureCLI@2
+        displayName: Azure CLI RemoveResourceGroup
+        inputs:
+          azureSubscription: $(ARM_SERVICE_CONNECTION)
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az group delete --name $(RESOURCEGROUP_NAME) --no-wait --yes
