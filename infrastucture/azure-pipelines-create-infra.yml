@@ -31,14 +31,7 @@ variables:
   - southindia
   - australiaeast
 
-trigger:
-  branches:
-    include:
-    - main
-  paths:
-    include:
-    - infrastucture/*
-    - azure-pipelines-infra.yml
+trigger: none
 
 pool:
   vmImage: windows-latest
