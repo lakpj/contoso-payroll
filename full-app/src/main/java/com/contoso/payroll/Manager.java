@@ -17,7 +17,7 @@ public class Manager {
 
 	public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-	private @Id @GeneratedValue Long id;
+	private @Id @GeneratedValue Integer id;
 
 	private String name;
 
@@ -57,11 +57,11 @@ public class Manager {
 		return result;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

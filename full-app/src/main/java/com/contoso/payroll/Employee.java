@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Employee {
 
-	private @Id @GeneratedValue Long id;
+	private @Id @GeneratedValue Integer id;
 	private String firstName;
 	private String lastName;
 	private String description;
@@ -50,11 +50,11 @@ public class Employee {
 		return Objects.hash(id, firstName, lastName, description, version, manager);
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
