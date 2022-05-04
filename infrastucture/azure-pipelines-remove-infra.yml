@@ -1,0 +1,30 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+variables:
+- group: ContosoPayroll
+- name: RESOURCEGROUP_NAME
+  value: '${{ parameters.ResourceGroupName }}'
+- name: LOCATION
+  value: '${{ parameters.Region }}'
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+# pipeline stage to compile backend code 
+- stage: RemoveResourceGroup
+  jobs:
+  - job: RemoveResourceGroup
+    displayName: Cleanup Infrastructure 
+    steps:
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: Remove temp RG
+        inputs:
+          azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
+          action: 'deleteRG'
+          resourceGroupName: $(RESOURCEGROUP_NAME)
+          location: $(LOCATION)
+          deploymentScope: 'Subscription'

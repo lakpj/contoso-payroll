@@ -78,4 +78,4 @@ stages:
           action: 'deleteRG'
           resourceGroupName: 'temp-rg'
           location: $(LOCATION)
-          deploymentScope: 'Resource Group'
+          deploymentScope: 'Subscription'
