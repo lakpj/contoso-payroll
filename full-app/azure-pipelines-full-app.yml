@@ -46,7 +46,7 @@ stages:
         inputs:
           azureSubscription: $(ARM_SERVICE_CONNECTION)
           ServerName: 'contoso-pay-db-server-temp.mysql.database.azure.com'
-          SqlUsername: $(MYSQL_USER_NAME)
+          SqlUsername: 'sqladmin@contoso-pay-db-server-temp'
           SqlPassword: $(MYSQL_PWD)
           TaskNameSelector: 'InlineSqlTask'
           SqlInline: |
