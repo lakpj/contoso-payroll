@@ -33,7 +33,7 @@ stages:
           resourceGroupName: 'temp-rg'
           location: westeurope
           deploymentMode: 'Incremental'
-          templateLocation : 'URL of the file'
+          templateLocation : 'Linked Artifact'
           csmFile: './infrastucture/MySqldb/azuredeploy.json'
           csmParametersFile: './infrastucture/MySqldb/azuredeploy.parameters.json'
           deploymentScope: 'Resource Group'    
