@@ -25,30 +25,32 @@ stages:
   - job: BuildandTest
     displayName: Build and Test with Maven
     steps:
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'temp-rg'
-        location: westeurope
-        deploymentMode: 'Incremental'
-        templateLocation : 'URL of the file'
-        csmFile: './infrastucture/MySqldb/azuredeploy.json'
-        csmParametersFile: './infrastucture/MySqldb/azuredeploy.parameters.json'
-        deploymentScope: 'Resource Group'    
-        deploymentName: 'DeployTempDatabaseServer'
-        workingDirectory: '$(Build.SourcesDirectory)/full-app'
-    - task: AzureMysqlDeployment@1
-      inputs:
-        azureSubscription: $(ARM_SERVICE_CONNECTION)
-        ServerName: $(MYSQL_SERVER_NAME)
-        SqlUsername: $(MYSQL_USER_NAME)
-        SqlPassword: $(MYSQL_PWD)
-        TaskNameSelector: 'InlineSqlTask'
-        SqlInline: |
-          DROP DATABASE IF EXISTS contosodb;
-          CREATE DATABASE contosodb;
-          USE contosodb;
+      - task: AzureResourceManagerTemplateDeployment@3
+        displayName: Create Temp DB Server for Maven
+        inputs:
+          azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
+          action: 'Create Or Update Resource Group'
+          resourceGroupName: 'temp-rg'
+          location: westeurope
+          deploymentMode: 'Incremental'
+          templateLocation : 'URL of the file'
+          csmFile: './infrastucture/MySqldb/azuredeploy.json'
+          csmParametersFile: './infrastucture/MySqldb/azuredeploy.parameters.json'
+          deploymentScope: 'Resource Group'    
+          deploymentName: 'DeployTempDatabaseServer'
+          workingDirectory: '$(Build.SourcesDirectory)/full-app'
+      - task: AzureMysqlDeployment@1
+        displayName: Create Temp DB in the Server
+        inputs:
+          azureSubscription: $(ARM_SERVICE_CONNECTION)
+          ServerName: $(MYSQL_SERVER_NAME)
+          SqlUsername: $(MYSQL_USER_NAME)
+          SqlPassword: $(MYSQL_PWD)
+          TaskNameSelector: 'InlineSqlTask'
+          SqlInline: |
+            DROP DATABASE IF EXISTS contosodb;
+            CREATE DATABASE contosodb;
+            USE contosodb;
       - task: CmdLine@2
         displayName: Build and Test Maven
         inputs:
@@ -70,6 +72,7 @@ stages:
           repository: $(DOCKER_REGISTORY)
           tags: '$(Build.BuildId)'
       - task: AzureResourceManagerTemplateDeployment@3
+        displayName: Remove temp RG
         inputs:
           azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
           action: 'deleteRG'
