@@ -13,6 +13,8 @@ variables:
 - name: RESOURCEGROUP_NAME
   value: '${{ parameters.ResourceGroupName }}'
 
+trigger: none
+
 pool:
   vmImage: ubuntu-latest
 
