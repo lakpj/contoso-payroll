@@ -43,7 +43,7 @@ stages:
         displayName: Create Temp DB in the Server
         inputs:
           azureSubscription: $(ARM_SERVICE_CONNECTION)
-          ServerName: $(MYSQL_SERVER_NAME)
+          ServerName: 'contoso-pay-db-server-temp.mysql.database.azure.com'
           SqlUsername: $(MYSQL_USER_NAME)
           SqlPassword: $(MYSQL_PWD)
           TaskNameSelector: 'InlineSqlTask'
