@@ -28,11 +28,11 @@ stages:
   - job: RemoveResourceGroup
     displayName: Cleanup Infrastructure 
     steps:
-      - task: AzureResourceManagerTemplateDeployment@3
-        displayName: Remove temp RG
+      - task: AzureCLI@2
+        displayName: Azure CLI RemoveResourceGroup
         inputs:
-          azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
-          action: 'deleteRG'
-          resourceGroupName: $(RESOURCEGROUP_NAME)
-          location: $(LOCATION)
-          deploymentScope: 'Subscription'
+          azureSubscription: $(ARM_SERVICE_CONNECTION)
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az group delete --name $(RESOURCEGROUP_NAME) --force-deletion-types --no-wait --yes

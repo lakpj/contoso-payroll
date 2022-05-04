@@ -5,6 +5,8 @@
 
 variables:
 - group: ContosoPayroll
+- name: TEMP_RG
+  value: tem-rg
 
 trigger:
   branches:
@@ -30,7 +32,7 @@ stages:
         inputs:
           azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
           action: 'Create Or Update Resource Group'
-          resourceGroupName: 'temp-rg'
+          resourceGroupName: $(TEMP_RG)
           location: westeurope
           deploymentMode: 'Incremental'
           templateLocation : 'URL of the file'
@@ -71,11 +73,11 @@ stages:
           Dockerfile: full-app/Dockerfile
           repository: $(DOCKER_REGISTORY)
           tags: '$(Build.BuildId)'
-      - task: AzureResourceManagerTemplateDeployment@3
-        displayName: Remove temp RG
+      - task: AzureCLI@2
+        displayName: Azure CLI RemoveResourceGroup
         inputs:
-          azureResourceManagerConnection: $(ARM_SERVICE_CONNECTION)
-          action: 'deleteRG'
-          resourceGroupName: 'temp-rg'
-          location: $(LOCATION)
-          deploymentScope: 'Subscription'
+          azureSubscription: $(ARM_SERVICE_CONNECTION)
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az group delete --name $(TEMP_RG) --force-deletion-types --no-wait --yes
