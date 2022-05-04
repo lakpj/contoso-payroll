@@ -7,9 +7,6 @@ parameters:
 - name: ResourceGroupName
   displayName: Resource Group Name
   type: string
-- name: Region
-  displayName: Azure region
-  type: string
 
 variables:
 - group: ContosoPayroll
