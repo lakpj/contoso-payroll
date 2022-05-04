@@ -3,6 +3,14 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+- name: ResourceGroupName
+  displayName: Resource Group Name
+  type: string
+- name: Region
+  displayName: Azure region
+  type: string
+
 variables:
 - group: ContosoPayroll
 - name: RESOURCEGROUP_NAME
