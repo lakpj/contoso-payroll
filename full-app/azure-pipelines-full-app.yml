@@ -65,6 +65,7 @@ stages:
           testResultsFormat: 'JUnit'
           testResultsFiles: './TEST-*.xml' 
           searchFolder: '$(Build.SourcesDirectory)/full-app/targets/surefire-reports'
+        condition: always()
       - task: Docker@2
         displayName: Build and Push Docker Image
         inputs:
@@ -81,3 +82,4 @@ stages:
           scriptLocation: inlineScript
           inlineScript: |
             az group delete --name $(TEMP_RG) --no-wait --yes
+        condition: always()
