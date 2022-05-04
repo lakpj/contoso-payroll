@@ -34,8 +34,8 @@ stages:
           location: westeurope
           deploymentMode: 'Incremental'
           templateLocation : 'URL of the file'
-          csmFile: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.json'
-          csmParametersFile: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.parameters.json'
+          csmFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.json'
+          csmParametersFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.parameters.json'
           deploymentScope: 'Resource Group'    
           deploymentName: 'DeployTempDatabaseServer'
           workingDirectory: '$(Build.SourcesDirectory)/full-app'
