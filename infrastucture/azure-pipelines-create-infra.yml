@@ -29,7 +29,7 @@ variables:
 - name: RESOURCEGROUP_NAME
   value: '${{ parameters.ResourceGroupName }}'
 - name: LOCATION
-  displayName: '${{ parameters.Region }}'
+  value: '${{ parameters.Region }}'
 
 trigger: none
 
