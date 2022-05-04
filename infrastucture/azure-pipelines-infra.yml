@@ -57,8 +57,8 @@ stages:
          location: $(LOCATION)
          deploymentMode: 'Incremental'
          templateLocation : 'URL of the file'
-         csmFile: './infrastucture/AppServicePlan/azuredeploy.json'
-         csmParametersFile: './infrastucture/AppServicePlan/azuredeploy.parameters.json'
+         csmFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/AppServicePlan/azuredeploy.json'
+         csmParametersFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/AppServicePlan/azuredeploy.parameters.json'
          deploymentName: 'DeployAppServicePlan'
          workingDirectory: '$(Build.SourcesDirectory)/full-app'
 - stage: DeployMySqlDatabase 
@@ -74,8 +74,8 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFile: './infrastucture/MySqldb/azuredeploy.json'
-        csmParametersFile: './infrastucture/MySqldb/azuredeploy.parameters.json'
+        csmFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.json'
+        csmParametersFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployDatabaseServer'
         workingDirectory: '$(Build.SourcesDirectory)/full-app'
@@ -106,8 +106,8 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFile: './infrastucture/Webapp/azuredeploy.json'
-        csmParametersFile: './infrastucture/Webapp/azuredeploy.parameters.json'
+        csmFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/Webapp/azuredeploy.json'
+        csmParametersFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/Webapp/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployWebapp'
         workingDirectory: '$(Build.SourcesDirectory)/full-app'
@@ -127,8 +127,8 @@ stages:
         location: $(LOCATION)
         deploymentMode: 'Incremental'
         templateLocation : 'URL of the file'
-        csmFile: './infrastucture/AppMonitoring/azuredeploy.json'
-        csmParametersFile: './infrastucture/AppMonitoring/azuredeploy.parameters.json'
+        csmFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/AppMonitoring/azuredeploy.json'
+        csmParametersFileLink: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/AppMonitoring/azuredeploy.parameters.json'
         deploymentScope: 'Resource Group'    
         deploymentName: 'DeployMonitoring'
         workingDirectory: '$(Build.SourcesDirectory)/full-app'
