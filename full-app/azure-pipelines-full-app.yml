@@ -63,7 +63,7 @@ stages:
         displayName: Publish Test Results
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: './TEST-*.xml' 
+          testResultsFiles: '../TEST-com.*.xml' 
           searchFolder: '$(Build.SourcesDirectory)/full-app/targets/surefire-reports'
         condition: always()
       - task: Docker@2

@@ -10,13 +10,6 @@ parameters:
 - name: Region
   displayName: Azure region
   type: string
-
-variables:
-- group: ContosoPayroll
-- name: RESOURCEGROUP_NAME
-  value: '${{ parameters.ResourceGroupName }}'
-- name: LOCATION
-  type: string
   default: 'westeurope'
   values:
   - eastus
@@ -30,6 +23,13 @@ variables:
   - westus
   - southindia
   - australiaeast
+
+variables:
+- group: ContosoPayroll
+- name: RESOURCEGROUP_NAME
+  value: '${{ parameters.ResourceGroupName }}'
+- name: LOCATION
+  displayName: '${{ parameters.Region }}'
 
 trigger: none
 
