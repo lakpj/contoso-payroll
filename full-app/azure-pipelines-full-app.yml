@@ -33,11 +33,12 @@ stages:
           resourceGroupName: 'temp-rg'
           location: westeurope
           deploymentMode: 'Incremental'
-          templateLocation : 'Linked Artifact'
-          csmFile: '$(Agent.BuildDirectory)/full-app/infrastucture/MySqldb/azuredeploy.json'
-          csmParametersFile: '$(Agent.BuildDirectory)/full-app/infrastucture/MySqldb/azuredeploy.parameters.json'
+          templateLocation : 'URL of the file'
+          csmFile: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.json'
+          csmParametersFile: '$(ARM_TEMPLATE_BASE_URI)/infrastucture/MySqldb/azuredeploy.parameters.json'
           deploymentScope: 'Resource Group'    
           deploymentName: 'DeployTempDatabaseServer'
+          workingDirectory: '$(Build.SourcesDirectory)/full-app'
       - task: AzureMysqlDeployment@1
         displayName: Create Temp DB in the Server
         inputs:
